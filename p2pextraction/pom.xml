@@ -65,24 +65,24 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- Only required to run tests in an IDE that bundles an older version -->
+       <!-- &lt;!&ndash; Only required to run tests in an IDE that bundles an older version &ndash;&gt;
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
             <version>${junit.platform.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- Only required to run tests in an IDE that bundles an older version -->
+        &lt;!&ndash; Only required to run tests in an IDE that bundles an older version &ndash;&gt;
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.jupiter.version}</version>
         </dependency>
-        <!-- Only required to run tests in an IDE that bundles an older version -->
+        &lt;!&ndash; Only required to run tests in an IDE that bundles an older version &ndash;&gt;
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
             <version>${junit.vintage.version}</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 </project>
