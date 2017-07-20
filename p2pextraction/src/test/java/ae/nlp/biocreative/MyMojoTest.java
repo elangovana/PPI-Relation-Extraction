@@ -10,7 +10,8 @@ class MyMojoTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
-       sut = new MyMojo();
+
+       this.sut = new MyMojo();
     }
 
     @org.junit.jupiter.api.AfterEach
@@ -20,7 +21,7 @@ class MyMojoTest {
 
     @org.junit.jupiter.api.Test
     void execute() {
-        sut.execute();
+        this.sut.execute();
     }
 
 }
