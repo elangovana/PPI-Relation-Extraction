@@ -59,6 +59,11 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.pengyifan.bioc</groupId>
+            <artifactId>pengyifan-bioc</artifactId>
+            <version>1.0.3</version>
+        </dependency>
         <!-- Only required to run tests in an IDE that bundles an older version -->
         <dependency>
             <groupId>org.junit.platform</groupId>
