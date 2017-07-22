@@ -11,7 +11,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import java.io.*;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ParserIT {
     private Parser sut;
-    File tempFile;
+    private static File tempFile;
     private static final Logger logger =
             Logger.getLogger(ParserIT.class.getName());
     private static final String trainingdata_url = "http://www.biocreative.org/media/store/files/2017/PMtask_Relations_TrainingSet.xml";
@@ -30,16 +29,15 @@ class ParserIT {
 
     @BeforeAll
     static void  classSetup() throws IOException {
-        }
+        tempFile= File.createTempFile("biocreative",".xml");
+        FileDownloadHelper.downloadFromUrl(new URL(trainingdata_url), tempFile.getAbsolutePath());
+
+    }
 
 
     @BeforeEach
     void setUp() throws IOException {
         sut = new Parser();
-        tempFile= File.createTempFile("biocreative",".xml");
-        downloadFromUrl(new URL(trainingdata_url), tempFile.getAbsolutePath());
-
-
     }
 
     @AfterEach
@@ -49,39 +47,9 @@ class ParserIT {
 
     @Test
     void process() throws IOException, XMLStreamException, ParserConfigurationException, SAXException {
-
         BioCCollectionReader actual = sut.process(tempFile.toURI().toURL());
         assertTrue(actual.readCollection().getDocmentCount() > 0);
     }
 
 
-    void downloadFromUrl(URL url, String localFilename) throws IOException {
-        InputStream is = null;
-        FileOutputStream fos = null;
-
-        try {
-            URLConnection urlConn = url.openConnection();//connect
-
-            is = urlConn.getInputStream();               //get connection inputstream
-            fos = new FileOutputStream(localFilename);   //open outputstream to local file
-
-            byte[] buffer = new byte[4096];              //declare 4KB buffer
-            int len;
-
-            //while we have availble data, continue downloading and storing to local file
-            while ((len = is.read(buffer)) > 0) {
-                fos.write(buffer, 0, len);
-            }
-        } finally {
-            try {
-                if (is != null) {
-                    is.close();
-                }
-            } finally {
-                if (fos != null) {
-                    fos.close();
-                }
-            }
-        }
-    }
 }
