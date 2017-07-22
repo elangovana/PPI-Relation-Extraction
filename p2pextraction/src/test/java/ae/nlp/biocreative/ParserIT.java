@@ -1,6 +1,8 @@
 package ae.nlp.biocreative;
 
 import com.pengyifan.bioc.io.BioCCollectionReader;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.XMLConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,14 +25,15 @@ class ParserIT {
     private static File tempFile;
     private static final Logger logger =
             Logger.getLogger(ParserIT.class.getName());
-    private static final String trainingdata_url = "http://www.biocreative.org/media/store/files/2017/PMtask_Relations_TrainingSet.xml";
 
 
 
     @BeforeAll
-    static void  classSetup() throws IOException {
+    static void  classSetup() throws IOException, ConfigurationException {
+        //Download biodcreative data file
         tempFile= File.createTempFile("biocreative",".xml");
-        FileDownloadHelper.downloadFromUrl(new URL(trainingdata_url), tempFile.getAbsolutePath());
+        String downloadUrl= new XMLConfiguration("config.xml").getString("xmlrelationshipTrainDataUrl");
+        FileDownloadHelper.downloadFromUrl(new URL(downloadUrl), tempFile.getAbsolutePath());
 
     }
 
