@@ -7,7 +7,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
- * Created by aparnaelangovan on 22/07/2017.
+ * Created by  on 22/07/2017.
  */
 public class FileDownloadHelper {
     public static void downloadFromUrl(URL url, String localFilename) throws IOException {
