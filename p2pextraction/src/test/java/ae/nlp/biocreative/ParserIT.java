@@ -1,5 +1,6 @@
 package ae.nlp.biocreative;
 
+import ae.nlp.biocreative.helpers.FileDownloadHelper;
 import com.pengyifan.bioc.io.BioCCollectionReader;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
@@ -17,9 +18,7 @@ import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Created by  on 22/07/2017.
- */
+
 class ParserIT {
     private Parser sut;
     private static File tempFile;
@@ -30,7 +29,7 @@ class ParserIT {
 
     @BeforeAll
     static void  classSetup() throws IOException, ConfigurationException {
-        //Download biodcreative data file
+        //Download biocreative data file
         tempFile= File.createTempFile("biocreative",".xml");
         String downloadUrl= new XMLConfiguration("config.xml").getString("xmlrelationshipTrainDataUrl");
         FileDownloadHelper.downloadFromUrl(new URL(downloadUrl), tempFile.getAbsolutePath());
@@ -50,7 +49,9 @@ class ParserIT {
 
     @Test
     void process() throws IOException, XMLStreamException, ParserConfigurationException, SAXException {
-        BioCCollectionReader actual = sut.process(tempFile.toURI().toURL());
+        //Act
+        BioCCollectionReader actual = sut.getBioCCollection(tempFile.toURI().toURL());
+        //Assert
         assertTrue(actual.readCollection().getDocmentCount() > 0);
     }
 

@@ -11,17 +11,14 @@ import javax.xml.stream.events.XMLEvent;
 import java.io.*;
 import java.net.URL;
 
-/**
- * Created by  on 22/07/2017.
- */
-public class Parser {
 
-    public  BioCCollectionReader process(URL url) throws IOException, SAXException, XMLStreamException, ParserConfigurationException {
+class Parser {
+
+    public  BioCCollectionReader getBioCCollection(URL url) throws IOException, SAXException, XMLStreamException, ParserConfigurationException {
 
         File file = new File(url.getFile());
         removeDtd(file.getAbsolutePath());
-        BioCCollectionReader bioc = new BioCCollectionReader(new FileInputStream(file.getAbsolutePath()));
-        return  bioc;
+        return new BioCCollectionReader(new FileInputStream(file.getAbsolutePath()));
     }
 
 

@@ -1,4 +1,4 @@
-package ae.nlp.biocreative;
+package ae.nlp.biocreative.helpers;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -6,9 +6,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by  on 22/07/2017.
- */
+
 public class FileDownloadHelper {
     public static void downloadFromUrl(URL url, String localFilename) throws IOException {
         InputStream is = null;
