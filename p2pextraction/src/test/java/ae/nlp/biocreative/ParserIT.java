@@ -1,7 +1,6 @@
 package ae.nlp.biocreative;
 
 import com.pengyifan.bioc.io.BioCCollectionReader;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +10,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.logging.Logger;
@@ -21,11 +19,11 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Created by aparnaelangovan on 22/07/2017.
  */
-class ParserTest {
+class ParserIT {
     private Parser sut;
     File tempFile;
     private static final Logger logger =
-            Logger.getLogger(ParserTest.class.getName());
+            Logger.getLogger(ParserIT.class.getName());
     private static final String trainingdata_url = "http://www.biocreative.org/media/store/files/2017/PMtask_Relations_TrainingSet.xml";
 
 
