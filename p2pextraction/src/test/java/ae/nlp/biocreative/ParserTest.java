@@ -30,7 +30,7 @@ class ParserTest {
 
     @BeforeAll
     static void  classSetup() throws IOException, ConfigurationException {
-        //Download biocreative data file
+
         relationshipDatafile = Paths.get(ConfigHelper.getTestDataDirectory(), "relationtrainingdata.xml").toAbsolutePath().toFile();
 
     }
