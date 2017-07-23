@@ -12,11 +12,12 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class ParserIT {
@@ -50,7 +51,7 @@ class ParserIT {
     @Test
     void process() throws IOException, XMLStreamException, ParserConfigurationException, SAXException {
         //Act
-        BioCCollectionReader actual = sut.getBioCCollection(tempFile.toURI().toURL());
+        BioCCollectionReader actual = sut.getBioCCollection(tempFile);
         //Assert
         assertTrue(actual.readCollection().getDocmentCount() > 0);
     }

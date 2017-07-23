@@ -9,18 +9,12 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Created by aparnaelangovan on 22/07/2017.
- */
 class RelationExtractorIT {
 
     private RelationExtractor sut;
@@ -29,7 +23,7 @@ class RelationExtractorIT {
     @Test
     void extract() throws IOException, XMLStreamException, ParserConfigurationException, SAXException {
         //Arrange
-        URL sampletraindatafile = Paths.get(testdatadir, "relationtrainingdata.xml").toAbsolutePath().toUri().toURL();
+        File sampletraindatafile = Paths.get(testdatadir, "relationtrainingdata.xml").toAbsolutePath().toFile();
         BioCCollectionReader bioCCollection = new Parser().getBioCCollection(sampletraindatafile);
 
         //Act

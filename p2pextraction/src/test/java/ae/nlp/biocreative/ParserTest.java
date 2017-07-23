@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ParserTest {
     private Parser sut;
-    private static URL relationshipDatafile;
+    private static File relationshipDatafile;
     private static final Logger logger =
             Logger.getLogger(ParserTest.class.getName());
 
@@ -31,7 +31,7 @@ class ParserTest {
     @BeforeAll
     static void  classSetup() throws IOException, ConfigurationException {
         //Download biocreative data file
-        relationshipDatafile = Paths.get(ConfigHelper.getTestDataDirectory(), "relationtrainingdata.xml").toAbsolutePath().toUri().toURL();
+        relationshipDatafile = Paths.get(ConfigHelper.getTestDataDirectory(), "relationtrainingdata.xml").toAbsolutePath().toFile();
 
     }
 
