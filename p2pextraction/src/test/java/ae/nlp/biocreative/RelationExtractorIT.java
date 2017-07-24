@@ -21,7 +21,7 @@ class RelationExtractorIT {
     private String testdatadir;
 
     @Test
-    void extract() throws IOException, XMLStreamException, ParserConfigurationException, SAXException {
+    void extract() throws IOException, XMLStreamException, ParserConfigurationException, SAXException, InterruptedException {
         //Arrange
         File sampletraindatafile = Paths.get(testdatadir, "relationtrainingdata.xml").toAbsolutePath().toFile();
         BioCCollectionReader bioCCollection = new Parser().getBioCCollection(sampletraindatafile);

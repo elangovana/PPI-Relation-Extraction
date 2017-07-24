@@ -17,6 +17,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -51,7 +52,7 @@ class ParserTest {
         //Act
         BioCCollectionReader actual = sut.getBioCCollection(relationshipDatafile);
         //Assert
-        assertTrue(actual.readCollection().getDocmentCount() > 0);
+        assertEquals(7,actual.readCollection().getDocmentCount());
     }
 
 
