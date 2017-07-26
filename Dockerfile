@@ -7,6 +7,7 @@ MAINTAINER Elangovan
 RUN apt-get update
 
 #install oracle jdk 8
+RUN apt-get install software-properties-common python-software-properties
 RUN add-apt-repository ppa:webupd8team/java
 RUN apt-get install oracle-java8-installer
 
