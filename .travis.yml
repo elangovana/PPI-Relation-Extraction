@@ -3,4 +3,4 @@ jdk:
   - oraclejdk8
 
 script:
-  docker build -t gnormplus:ae
+  docker build -t gnormplus:ae .
