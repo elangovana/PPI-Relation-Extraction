@@ -3,4 +3,4 @@ jdk:
   - oraclejdk8
 
 before_install:
-  docker build -t ae/gnormplus
+  docker build -t gnormplus:ae
