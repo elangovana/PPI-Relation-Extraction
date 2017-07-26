@@ -24,8 +24,8 @@ RUN unzip GNormPlusJava.zip -d GNormPlusJava
 ########Install C++ compilers for CRF
 RUN apt-get -y install build-essential
 RUN apt-get -y install gawk
-RUN wget https://doc-00-74-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/88krvhl7omq1srbp4s9q513ibsq8m4co/1501034400000/13553212398903315502/*/0B4y35FiV1wh7d0dGRU5uRjB4dGM?e=download -o CRF58.zip
-RUN unzip CRF58.zip -d CRF58
+COPY CRFLib/CRFplusplus_v0.58.zip .
+RUN unzip CRFplusplus_v0.58.zip -d CRF58
 RUN copy -r CRF58/*  GNormPlusJava/CRF
 RUN cd CRF
 RUN chmod +x ./configure
