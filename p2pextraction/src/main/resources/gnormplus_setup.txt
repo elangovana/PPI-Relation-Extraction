@@ -15,9 +15,9 @@
 [Focus Species]
 	FocusSpecies = All
 [Dictionary & Model]
-	DictionaryFolder = /Users/IdeaProjects/p2pmutation/p2pextraction/src/main/resources/Dictionary
-	GNRModel = /Users/IdeaProjects/p2pmutation/p2pextraction/src/main/resources/Dictionary/GNR.Model
-	SCModel = /Users/IdeaProjects/p2pmutation/p2pextraction/src/main/resources/Dictionary/SimConcept.Model
+	DictionaryFolder = Dictionary
+	GNRModel = Dictionary/GNR.Model
+	SCModel = Dictionary/SimConcept.Model
 	GeneIDMatch = True
 	Normalization2Protein = False
 	DeleteTmp = True
