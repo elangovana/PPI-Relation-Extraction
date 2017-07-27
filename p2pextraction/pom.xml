@@ -139,7 +139,13 @@
             <artifactId>GNormPlus</artifactId>
             <version>1.0.0</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/org.xmlmatchers/xml-matchers -->
+        <dependency>
+            <groupId>org.xmlmatchers</groupId>
+            <artifactId>xml-matchers</artifactId>
+            <version>1.0-RC1</version>
+            <scope>test</scope>
+        </dependency>
 
 
     </dependencies>
