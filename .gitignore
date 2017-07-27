@@ -1,6 +1,6 @@
 resources/Dictionary
 .idea
-*.iml
+
 .DS_Store
 p2pextraction/target/
 /.idea/
