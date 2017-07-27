@@ -3,5 +3,5 @@ resources/Dictionary
 *.iml
 .DS_Store
 p2pextraction/target/
-
+/.idea/
 /p2pextraction/src/test/resources/Dictionary/
