@@ -25,7 +25,7 @@ import static org.xmlmatchers.transform.XmlConverters.the;
 /**
  * Created by aparnaelangovan on 27/07/2017.
  */
-class GeneExtractorTest {
+class GeneExtractorIT {
     private GeneExtractor sut;
 
     @BeforeEach
