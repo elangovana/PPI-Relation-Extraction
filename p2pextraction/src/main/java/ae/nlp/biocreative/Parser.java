@@ -20,7 +20,7 @@ class Parser {
     }
 
 
-    private void removeDtd(String filePath) throws IOException, XMLStreamException {
+    public void removeDtd(String filePath) throws IOException, XMLStreamException {
         XMLEventWriter output = null;
         XMLEventReader input = null;
         StringWriter stringWriter = new StringWriter();
