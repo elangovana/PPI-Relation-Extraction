@@ -10,28 +10,34 @@ import java.util.*;
 public class RelationExtractorCooccurance {
 
     public BioCCollection Extract(BioCCollectionReader biocCollection) throws XMLStreamException, IOException, InterruptedException {
-        BioCCollection outBiocCollection = new BioCCollection();
+        try{
+            BioCCollection outBiocCollection = new BioCCollection();
 
-        for (Iterator<BioCDocument> doci = biocCollection.readCollection().documentIterator(); doci.hasNext(); ) {
-            BioCDocument doc = doci.next();
+            for (Iterator<BioCDocument> doci = biocCollection.readCollection().documentIterator(); doci.hasNext(); ) {
+                BioCDocument doc = doci.next();
 
-            HashSet<String> genesInDoc = new HashSet<>();
+                HashSet<String> genesInDoc = new HashSet<>();
 
-            for (BioCPassage passage : doc.getPassages()) {
-                List<String> genesInPassage = getGenes(passage);
-                addRelationToDoc(doc, genesInDoc, genesInPassage);
-                //To avoid duplicates
-                genesInDoc.addAll(genesInPassage);
+                for (BioCPassage passage : doc.getPassages()) {
+                    List<String> genesInPassage = getGenes(passage);
+                    addRelationToDoc(doc, genesInDoc, genesInPassage);
+                    //To avoid duplicates
+                    genesInDoc.addAll(genesInPassage);
+
+                }
+                outBiocCollection.addDocument(doc);
+
 
             }
-            outBiocCollection.addDocument(doc);
 
+            biocCollection.close();
 
+            return outBiocCollection;
+        }
+        finally {
+            if (biocCollection!= null) biocCollection.close();
         }
 
-        biocCollection.close();
-
-        return outBiocCollection;
 
     }
 

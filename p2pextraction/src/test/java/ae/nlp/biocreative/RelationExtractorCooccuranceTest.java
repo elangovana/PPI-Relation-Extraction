@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 class RelationExtractorCooccuranceTest {
 
@@ -25,13 +27,14 @@ class RelationExtractorCooccuranceTest {
     void extract() throws IOException, XMLStreamException, ParserConfigurationException, SAXException, InterruptedException {
         //Arrange
         File sampletraindatafile = Paths.get(testdatadir, "relationtrainingdata_gnormplus_out.xml").toAbsolutePath().toFile();
-        BioCCollectionReader bioCCollection = new Parser().getBioCCollection(sampletraindatafile);
 
         //Act
-        BioCCollection actual= sut.Extract(bioCCollection);
+        BioCCollection actual= sut.Extract(new Parser().getBioCCollection(sampletraindatafile));
+
+        //Smoke check
+        assertEquals(new Parser().getBioCCollection(sampletraindatafile).readCollection().getDocmentCount(), actual.getDocmentCount());
         BioCCollectionWriter writer = new BioCCollectionWriter("out.xml");
-        //TODO: Fix the test..
-        writer.writeCollection(actual);
+
     }
 
     @BeforeEach
