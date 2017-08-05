@@ -11,5 +11,5 @@ import java.io.IOException;
  */
 public interface RelationExtractor {
 
-    BioCCollection Extract(BioCCollectionReader biocCollection) throws XMLStreamException, IOException, InterruptedException;
+    BioCCollection Extract(BioCCollectionReader biocCollectionReader) throws XMLStreamException, IOException, InterruptedException;
 }

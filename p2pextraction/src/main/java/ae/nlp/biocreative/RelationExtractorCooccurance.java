@@ -10,11 +10,11 @@ import java.util.*;
 public class RelationExtractorCooccurance implements RelationExtractor {
 
     @Override
-    public BioCCollection Extract(BioCCollectionReader biocCollection) throws XMLStreamException, IOException, InterruptedException {
+    public BioCCollection Extract(BioCCollectionReader biocCollectionReader) throws XMLStreamException, IOException, InterruptedException {
         try{
             BioCCollection outBiocCollection = new BioCCollection();
 
-            for (Iterator<BioCDocument> doci = biocCollection.readCollection().documentIterator(); doci.hasNext(); ) {
+            for (Iterator<BioCDocument> doci = biocCollectionReader.readCollection().documentIterator(); doci.hasNext(); ) {
                 BioCDocument doc = doci.next();
 
                 HashSet<String> genesInDoc = new HashSet<>();
@@ -31,12 +31,12 @@ public class RelationExtractorCooccurance implements RelationExtractor {
 
             }
 
-            biocCollection.close();
+
 
             return outBiocCollection;
         }
         finally {
-            if (biocCollection!= null) biocCollection.close();
+            if (biocCollectionReader!= null) biocCollectionReader.close();
         }
 
 
