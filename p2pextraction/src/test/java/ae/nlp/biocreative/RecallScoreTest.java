@@ -16,9 +16,7 @@ import java.text.DecimalFormat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Created by aparnaelangovan on 5/08/2017.
- */
+
 class RecallScoreTest {
     private RecallScore _sut;
     private String _testdatadir;
@@ -51,7 +49,7 @@ class RecallScoreTest {
 
         //Assert
         DecimalFormat numFormat = new DecimalFormat("0.000");
-        assertEquals(numFormat.format(.353), numFormat.format(actual));
+        assertEquals(numFormat.format(.750), numFormat.format(actual));
     }
 
 }

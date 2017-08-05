@@ -13,7 +13,7 @@ class RecallScore {
 
     private HashMap<String, BioCDocument> _docHashMap;
 
-    public  double CalculateScore(BioCCollection trainingSet, BioCCollection predictedSet){
+    double CalculateScore(BioCCollection trainingSet, BioCCollection predictedSet){
         //Preprocess , build training set hash
         int actualTotalRel = GetTotalRelation(trainingSet);
         int predCorrectRel = 0;
@@ -33,7 +33,7 @@ class RecallScore {
                if (ExistsInTraining(trainingDoc, Gene1, Gene2)){
                    predCorrectRel++;
                }
-               actualTotalRel++;
+
 
 
             }
