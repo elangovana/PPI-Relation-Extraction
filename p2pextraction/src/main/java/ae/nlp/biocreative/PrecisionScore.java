@@ -9,10 +9,11 @@ import java.util.HashSet;
 import java.util.Optional;
 
 
-public class PrecisionScore {
+public class PrecisionScore implements Scorer {
 
     private HashMap<String, BioCDocument> _docHashMap;
 
+    @Override
     public  double CalculateScore(BioCCollection trainingSet, BioCCollection predictedSet){
         //Preprocess , build training set hash
         int predTotalRel =0;
@@ -39,6 +40,11 @@ public class PrecisionScore {
             }
         }
         return  (double)predCorrectRel/(double)predTotalRel;
+    }
+
+    @Override
+    public String GetScoringMethodName() {
+        return this.getClass().getName();
     }
 
     private boolean ExistsInTraining(BioCDocument trainingDoc, String predGeneRelGene1, String predGeneRelGene2) {

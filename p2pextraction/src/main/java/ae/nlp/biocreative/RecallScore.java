@@ -9,11 +9,11 @@ import java.util.HashSet;
 import java.util.Optional;
 
 
-class RecallScore {
+class RecallScore implements  Scorer  {
 
     private HashMap<String, BioCDocument> _docHashMap;
 
-    double CalculateScore(BioCCollection trainingSet, BioCCollection predictedSet){
+    public double CalculateScore(BioCCollection trainingSet, BioCCollection predictedSet){
         //Preprocess , build training set hash
         int actualTotalRel = GetTotalRelation(trainingSet);
         int predCorrectRel = 0;
@@ -91,5 +91,8 @@ class RecallScore {
         return  docHashMap;
     }
 
-
+    @Override
+    public String GetScoringMethodName() {
+        return this.getClass().getName();
+    }
 }

@@ -7,8 +7,9 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.util.*;
 
-public class RelationExtractorCooccurance {
+public class RelationExtractorCooccurance implements RelationExtractor {
 
+    @Override
     public BioCCollection Extract(BioCCollectionReader biocCollection) throws XMLStreamException, IOException, InterruptedException {
         try{
             BioCCollection outBiocCollection = new BioCCollection();
