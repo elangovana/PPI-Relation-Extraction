@@ -1,7 +1,6 @@
 package ae.nlp.biocreative;
 
 import ae.nlp.biocreative.helpers.ConfigHelper;
-import com.pengyifan.bioc.io.BioCCollectionReader;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,19 +17,18 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.xmlmatchers.equivalence.IsEquivalentTo.isEquivalentTo;
 import static org.xmlmatchers.transform.XmlConverters.the;
 
 /**
  * Created by aparnaelangovan on 27/07/2017.
  */
-class GeneExtractorIT {
-    private GeneExtractor sut;
+class GeneExtractorGNormPlusIT {
+    private GeneExtractorGNormPlus sut;
 
     @BeforeEach
     void setUp() {
-            sut = new GeneExtractor();
+            sut = new GeneExtractorGNormPlus();
     }
 
     @AfterEach

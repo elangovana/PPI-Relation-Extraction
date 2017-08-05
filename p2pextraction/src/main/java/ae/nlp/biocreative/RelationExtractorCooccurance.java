@@ -10,61 +10,82 @@ import java.util.*;
 public class RelationExtractorCooccurance {
 
     public BioCCollection Extract(BioCCollectionReader biocCollection) throws XMLStreamException, IOException, InterruptedException {
-        BioCCollection output = new BioCCollection();
+        BioCCollection outBiocCollection = new BioCCollection();
 
         for (Iterator<BioCDocument> doci = biocCollection.readCollection().documentIterator(); doci.hasNext(); ) {
             BioCDocument doc = doci.next();
-            HashSet<String> geneSet = new HashSet<String>();
-            System.out.println("--Doc" + doc.getID());
+
+            HashSet<String> genesInDoc = new HashSet<>();
 
             for (BioCPassage passage : doc.getPassages()) {
-                System.out.println("----passage");
-                //Get genes identified
-                for (BioCAnnotation annotation : passage.getAnnotations()) {
-                    //Annotation is a gene
-                    if (annotation.getInfon("type").get().equals("Gene")) {
-                        //Get NCBI gene name
-                        Optional<String> ncbiGeneInfo = annotation.getInfon("NCBI GENE");
-                        if (ncbiGeneInfo.isPresent()) {
-                            geneSet.add(ncbiGeneInfo.get());
-                        }
-                    }
-                }
+                List<String> genesInPassage = getGenes(passage);
+                addRelationToDoc(doc, genesInDoc, genesInPassage);
+                //To avoid duplicates
+                genesInDoc.addAll(genesInPassage);
+
             }
-
-
-            //Add relation
-            List<String> geneList = new ArrayList<String>(geneSet);
-            for (int i = 0, r=0;  i < geneList.size(); i++) {
-
-                for (int j = i + 1; j < geneList.size(); j++, r++) {
-                    BioCRelation relation = new BioCRelation();
-
-
-                    Map<String, String> infon = new HashMap<>();
-                    infon.put("Gene1", geneList.get(i));
-                    infon.put("Gene2", geneList.get(j));
-                    infon.put("relation", "PPIm");
-                    relation.setInfons(infon);
-
-                    relation.setID("REL" + r);
-
-                    output.addDocument(doc);
-
-                    doc.addRelation(relation);
-
-
-                }
-            }
-
+            outBiocCollection.addDocument(doc);
 
 
         }
 
         biocCollection.close();
 
-        return  output;
+        return outBiocCollection;
 
+    }
+
+    private void addRelationToDoc(BioCDocument doc, HashSet<String> genesInDoc, List<String> genesInPassage) {
+        for (int i = 0; i < genesInPassage.size(); i++) {
+
+            for (int j = i + 1; j < genesInPassage.size(); j++) {
+                if (CheckForDuplicateRelation(genesInDoc, genesInPassage.get(i), genesInPassage.get(j))) continue;
+                ;
+                BioCRelation relation = new BioCRelation();
+
+
+                Map<String, String> infon = new HashMap<>();
+                infon.put("Gene1", genesInPassage.get(i));
+                infon.put("Gene2", genesInPassage.get(j));
+                infon.put("relation", "PPIm");
+                relation.setInfons(infon);
+
+                relation.setID(genesInPassage.get(i) + "#" + genesInPassage.get(j));
+
+
+                doc.addRelation(relation);
+
+
+            }
+        }
+    }
+
+    private boolean CheckForDuplicateRelation(HashSet<String> geneList, String gene1, String gene2) {
+        return geneList.contains(gene1) && geneList.contains(gene2);
+    }
+
+
+    /**
+     * @param passage Biocpassage
+     * @return Returns the list of genes from the annotations
+     */
+    private ArrayList<String> getGenes(BioCPassage passage) {
+        HashSet<String> geneSet = new HashSet<String>();
+
+
+        //Get genes identified
+        for (BioCAnnotation annotation : passage.getAnnotations()) {
+            //Annotation is a gene
+            if (annotation.getInfon("type").get().equals("Gene")) {
+                //Get NCBI gene name
+                Optional<String> ncbiGeneInfo = annotation.getInfon("NCBI GENE");
+                if (ncbiGeneInfo.isPresent()) {
+                    geneSet.add(ncbiGeneInfo.get());
+                }
+            }
+        }
+
+        return new ArrayList<>(geneSet);
     }
 
 }

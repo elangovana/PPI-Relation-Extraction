@@ -7,7 +7,7 @@ import java.io.File;
 /**
  * Created by aparnaelangovan on 27/07/2017.
  */
-public class GeneExtractor {
+public class GeneExtractorGNormPlus {
     public File extract(File file) {
         return file;
     }
