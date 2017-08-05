@@ -12,7 +12,9 @@ import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 
+import static java.lang.Math.round;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -49,7 +51,8 @@ class PrecisionScoreTest {
         double actual = _sut.CalculateScore(trainingSet, predSet);
 
         //Assert
-        assertEquals(9, actual);
+        DecimalFormat numFormat = new DecimalFormat("0.000");
+        assertEquals(numFormat.format(.667), numFormat.format(actual));
     }
 
 }
