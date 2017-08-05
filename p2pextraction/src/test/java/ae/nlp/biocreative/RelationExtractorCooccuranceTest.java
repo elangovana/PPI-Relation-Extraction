@@ -33,7 +33,9 @@ class RelationExtractorCooccuranceTest {
 
         //Smoke check
         assertEquals(new Parser().getBioCCollection(sampletraindatafile).readCollection().getDocmentCount(), actual.getDocmentCount());
+        //TODO:Clean up used for debug only..
         BioCCollectionWriter writer = new BioCCollectionWriter("out.xml");
+        writer.writeCollection(actual);
 
     }
 

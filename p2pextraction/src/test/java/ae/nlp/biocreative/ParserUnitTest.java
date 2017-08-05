@@ -13,7 +13,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
@@ -21,11 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-class ParserTest {
+class ParserUnitTest {
     private Parser sut;
     private static File relationshipDatafile;
     private static final Logger logger =
-            Logger.getLogger(ParserTest.class.getName());
+            Logger.getLogger(ParserUnitTest.class.getName());
 
 
 
