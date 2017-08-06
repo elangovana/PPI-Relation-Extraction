@@ -3,9 +3,8 @@ package ae.nlp.biocreative;
 import ae.nlp.biocreative.helpers.ConfigHelper;
 import com.pengyifan.bioc.BioCCollection;
 import com.pengyifan.bioc.io.BioCCollectionWriter;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.testng.Assert;
+import org.testng.annotations.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,14 +15,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 
 class PipelineTest {
     private Pipeline _sut;
     private String _testdatadir;
 
-    @BeforeEach
+    @BeforeTest
     void setUp() {
         _sut = new Pipeline();
         //Testdata
@@ -31,7 +28,7 @@ class PipelineTest {
 
     }
 
-    @AfterEach
+    @AfterTest
     void tearDown() {
 
     }

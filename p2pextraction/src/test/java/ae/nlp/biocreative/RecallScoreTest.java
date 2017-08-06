@@ -2,9 +2,9 @@ package ae.nlp.biocreative;
 
 import ae.nlp.biocreative.helpers.ConfigHelper;
 import com.pengyifan.bioc.BioCCollection;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.testng.Assert;
+import org.testng.annotations.*;
+
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,14 +14,13 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-class RecallScoreTest {
+public class RecallScoreTest {
     private RecallScore _sut;
     private String _testdatadir;
 
-    @BeforeEach
+    @BeforeTest
     void setUp() {
         _sut = new RecallScore();
         //Testdata
@@ -29,19 +28,18 @@ class RecallScoreTest {
 
     }
 
-    @AfterEach
+    @AfterTest
     void tearDown() {
 
     }
 
-    @Test
+    @DataProvider(name = "calculateScoreTestCases")
+    public static Object[][] calculateScoreTestCases() {
+        return new Object[][] {{"relationPred_relation.xml", "relationtrainingdata.xml", .750}};
+    }
 
-    void calculateScore() throws SAXException, XMLStreamException, ParserConfigurationException, IOException {
-        //Arrange
-        String iPredictedRelBiocXML = "relationPred_relation.xml";
-        String iTrainingDataBiocXml = "relationtrainingdata.xml";
-        double expectedScore = .750;
-
+    @Test(dataProvider = "calculateScoreTestCases")
+    void calculateScore( String iPredictedRelBiocXML,  String iTrainingDataBiocXml , double expectedScore ) throws SAXException, XMLStreamException, ParserConfigurationException, IOException {
         File sampletraindatafile = Paths.get(_testdatadir, iTrainingDataBiocXml).toAbsolutePath().toFile();
         File samplePreddatafile = Paths.get(_testdatadir, iPredictedRelBiocXML).toAbsolutePath().toFile();
 
@@ -53,7 +51,7 @@ class RecallScoreTest {
 
         //Assert
         DecimalFormat numFormat = new DecimalFormat("0.000");
-        assertEquals(numFormat.format(expectedScore), numFormat.format(actual));
+        Assert.assertEquals (numFormat.format(expectedScore), numFormat.format(actual));
     }
 
 }

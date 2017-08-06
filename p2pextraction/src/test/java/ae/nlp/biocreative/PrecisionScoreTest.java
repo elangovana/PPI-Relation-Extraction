@@ -2,9 +2,8 @@ package ae.nlp.biocreative;
 
 import ae.nlp.biocreative.helpers.ConfigHelper;
 import com.pengyifan.bioc.BioCCollection;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.testng.Assert;
+import org.testng.annotations.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -15,7 +14,7 @@ import java.nio.file.Paths;
 import java.text.DecimalFormat;
 
 import static java.lang.Math.round;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * Created by aparnaelangovan on 5/08/2017.
@@ -24,7 +23,7 @@ class PrecisionScoreTest {
     private PrecisionScore _sut;
     private String _testdatadir;
 
-    @BeforeEach
+    @BeforeTest
     void setUp() {
         _sut = new PrecisionScore();
         //Testdata
@@ -32,7 +31,7 @@ class PrecisionScoreTest {
 
     }
 
-    @AfterEach
+    @AfterTest
     void tearDown() {
 
     }
@@ -52,7 +51,7 @@ class PrecisionScoreTest {
 
         //Assert
         DecimalFormat numFormat = new DecimalFormat("0.000");
-        assertEquals(numFormat.format(.667), numFormat.format(actual));
+        Assert.assertEquals(numFormat.format(.667), numFormat.format(actual));
     }
 
 }

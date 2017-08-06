@@ -5,9 +5,8 @@ import ae.nlp.biocreative.helpers.XmlHelper;
 import com.pengyifan.bioc.BioCCollection;
 import com.pengyifan.bioc.io.BioCCollectionReader;
 import com.pengyifan.bioc.io.BioCCollectionWriter;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.testng.Assert;
+import org.testng.annotations.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,7 +18,6 @@ import java.nio.file.Paths;
 import static org.hamcrest.EasyMock2Matchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.xml.HasXPath.hasXPath;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class RelationExtractorCooccuranceTest {
@@ -37,11 +35,11 @@ class RelationExtractorCooccuranceTest {
         BioCCollection actual= sut.Extract(new Parser().getBioCCollection(sampletraindatafile));
 
         //Smoke check
-        assertEquals(new Parser().getBioCCollection(sampletraindatafile).readCollection().getDocmentCount(), actual.getDocmentCount());
+        Assert.assertEquals(new Parser().getBioCCollection(sampletraindatafile).readCollection().getDocmentCount(), actual.getDocmentCount());
        //TODO: Check for relation
     }
 
-    @BeforeEach
+    @BeforeTest
     void setUp() {
         sut = new RelationExtractorCooccurance();
         //Testdata
@@ -51,7 +49,7 @@ class RelationExtractorCooccuranceTest {
 
 
 
-    @AfterEach
+    @AfterTest
     void tearDown() {
 
     }

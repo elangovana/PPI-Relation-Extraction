@@ -3,10 +3,7 @@ package ae.nlp.biocreative;
 import ae.nlp.biocreative.helpers.ConfigHelper;
 import com.pengyifan.bioc.io.BioCCollectionReader;
 import org.apache.commons.configuration.ConfigurationException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -15,9 +12,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
+import org.testng.Assert;
+import org.testng.annotations.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class ParserUnitTest {
@@ -28,7 +25,7 @@ class ParserUnitTest {
 
 
 
-    @BeforeAll
+    @BeforeClass
     static void  classSetup() throws IOException, ConfigurationException {
 
         relationshipDatafile = Paths.get(ConfigHelper.getTestDataDirectory(), "relationtrainingdata.xml").toAbsolutePath().toFile();
@@ -36,12 +33,12 @@ class ParserUnitTest {
     }
 
 
-    @BeforeEach
+    @BeforeTest
     void setUp() throws IOException {
         sut = new Parser();
     }
 
-    @AfterEach
+    @AfterTest
     void tearDown() {
 
     }
@@ -51,7 +48,7 @@ class ParserUnitTest {
         //Act
         BioCCollectionReader actual = sut.getBioCCollection(relationshipDatafile);
         //Assert
-        assertEquals(7,actual.readCollection().getDocmentCount());
+        Assert.assertEquals(7,actual.readCollection().getDocmentCount());
     }
 
 

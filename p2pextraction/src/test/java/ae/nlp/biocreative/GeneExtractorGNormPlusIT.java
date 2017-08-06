@@ -2,9 +2,7 @@ package ae.nlp.biocreative;
 
 import ae.nlp.biocreative.helpers.ConfigHelper;
 import ae.nlp.biocreative.helpers.XmlHelper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -27,12 +25,12 @@ import static org.xmlmatchers.transform.XmlConverters.the;
 class GeneExtractorGNormPlusIT {
     private GeneExtractorGNormPlus sut;
 
-    @BeforeEach
+    @BeforeTest
     void setUp() {
             sut = new GeneExtractorGNormPlus();
     }
 
-    @AfterEach
+    @AfterTest
     void tearDown() {
 
     }

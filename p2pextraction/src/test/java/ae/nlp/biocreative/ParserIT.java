@@ -4,10 +4,8 @@ import ae.nlp.biocreative.helpers.FileDownloadHelper;
 import com.pengyifan.bioc.io.BioCCollectionReader;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.testng.Assert;
+import org.testng.annotations.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,7 +15,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class ParserIT {
@@ -28,7 +25,7 @@ class ParserIT {
 
 
 
-    @BeforeAll
+    @BeforeClass
     static void  classSetup() throws IOException, ConfigurationException {
         //Download biocreative data file
         tempFile= File.createTempFile("biocreative",".xml");
@@ -38,12 +35,12 @@ class ParserIT {
     }
 
 
-    @BeforeEach
+    @BeforeTest
     void setUp() throws IOException {
         sut = new Parser();
     }
 
-    @AfterEach
+    @AfterTest
     void tearDown() {
 
     }
@@ -53,7 +50,7 @@ class ParserIT {
         //Act
         BioCCollectionReader actual = sut.getBioCCollection(tempFile);
         //Assert
-        assertTrue(actual.readCollection().getDocmentCount() > 0);
+        Assert.assertTrue(actual.readCollection().getDocmentCount() > 0);
     }
 
 
