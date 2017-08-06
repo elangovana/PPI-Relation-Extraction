@@ -1,6 +1,7 @@
 package ae.nlp.biocreative;
 
 import ae.nlp.biocreative.helpers.ConfigHelper;
+import ae.nlp.biocreative.helpers.XmlHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,15 +45,9 @@ class GeneExtractorGNormPlusIT {
         //Act
         File actual = sut.extract(inputFile);
         //Assert
-        assertThat(the(ParseXml(expectedFile)), isEquivalentTo(the(ParseXml(actual))));
+        assertThat(the(XmlHelper.ParseXml(expectedFile)), isEquivalentTo(the(XmlHelper.ParseXml(actual))));
 
     }
 
-    Node ParseXml(File fXmlFile) throws ParserConfigurationException, IOException, SAXException {
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document doc = dBuilder.parse(fXmlFile);
-        return doc;
-    }
 
 }

@@ -1,6 +1,7 @@
 package ae.nlp.biocreative;
 
 import ae.nlp.biocreative.helpers.ConfigHelper;
+import ae.nlp.biocreative.helpers.XmlHelper;
 import com.pengyifan.bioc.BioCCollection;
 import com.pengyifan.bioc.io.BioCCollectionReader;
 import com.pengyifan.bioc.io.BioCCollectionWriter;
@@ -15,6 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import static org.hamcrest.EasyMock2Matchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.xml.HasXPath.hasXPath;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -26,17 +30,15 @@ class RelationExtractorCooccuranceTest {
     @Test
     void extract() throws IOException, XMLStreamException, ParserConfigurationException, SAXException, InterruptedException {
         //Arrange
-        File sampletraindatafile = Paths.get(testdatadir, "relationtrainingdata_gnormplus_out.xml").toAbsolutePath().toFile();
+        String iGeneAnnoatedBiocXml = "relationtrainingdata_gnormplus_out.xml";
+        File sampletraindatafile = Paths.get(testdatadir, iGeneAnnoatedBiocXml).toAbsolutePath().toFile();
 
         //Act
         BioCCollection actual= sut.Extract(new Parser().getBioCCollection(sampletraindatafile));
 
         //Smoke check
         assertEquals(new Parser().getBioCCollection(sampletraindatafile).readCollection().getDocmentCount(), actual.getDocmentCount());
-        //TODO:Clean up used for debug only..
-        BioCCollectionWriter writer = new BioCCollectionWriter("out.xml");
-        writer.writeCollection(actual);
-
+       //TODO: Check for relation
     }
 
     @BeforeEach
