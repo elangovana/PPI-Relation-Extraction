@@ -13,6 +13,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -34,14 +35,22 @@ class GeneExtractorGNormPlusIT {
     void tearDown() {
 
     }
+    @DataProvider(name = "processTestCases")
+    public static Object[][] processTestCases() {
+        String testDir = ConfigHelper.getTestDataDirectory();
+        return new Object[][] {{Paths.get(testDir,"relationtrainingdata.xml"), Paths.get(testDir, "relationtrainingdata_gnormplus_out.xml")}};
+    }
 
-    @Test
-    void process() throws IOException, XMLStreamException, ParserConfigurationException, SAXException {
+
+    @Test(dataProvider = "processTestCases")
+    void process(Path trainingDataBiocXml , Path predictedGeneAnnotationsBiocXml) throws IOException, XMLStreamException, ParserConfigurationException, SAXException {
         //Arrange
-        File inputFile =  Paths.get(ConfigHelper.getTestDataDirectory(), "relationtrainingdata.xml").toAbsolutePath().toFile();
-        File expectedFile =  Paths.get(ConfigHelper.getTestDataDirectory(), "relationtrainingdata_gnormplus_out.xml").toAbsolutePath().toFile();
+        File inputFile =  trainingDataBiocXml.toAbsolutePath().toFile();
+        File expectedFile =  predictedGeneAnnotationsBiocXml.toAbsolutePath().toFile();
+
         //Act
         File actual = sut.extract(inputFile);
+
         //Assert
         assertThat(the(XmlHelper.ParseXml(expectedFile)), isEquivalentTo(the(XmlHelper.ParseXml(actual))));
 

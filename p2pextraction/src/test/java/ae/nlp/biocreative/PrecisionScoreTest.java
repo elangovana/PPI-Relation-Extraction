@@ -10,6 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 
@@ -19,7 +20,7 @@ import static java.lang.Math.round;
 /**
  * Created by aparnaelangovan on 5/08/2017.
  */
-class PrecisionScoreTest {
+public class PrecisionScoreTest {
     private PrecisionScore _sut;
     private String _testdatadir;
 
@@ -36,12 +37,16 @@ class PrecisionScoreTest {
 
     }
 
-    @Test
+    @DataProvider(name = "calculateScoreTestCases")
+    public static Object[][] calculateScoreTestCases() {
+        String testdatadir = ConfigHelper.getTestDataDirectory();
+        return new Object[][] {{Paths.get(testdatadir,"relationPred_relation.xml"), Paths.get(testdatadir,"relationtrainingdata.xml"), .667}};
+    }
 
-    void calculateScore() throws SAXException, XMLStreamException, ParserConfigurationException, IOException {
-        //Arrange
-        File sampletraindatafile = Paths.get(_testdatadir, "relationtrainingdata.xml").toAbsolutePath().toFile();
-        File samplePreddatafile = Paths.get(_testdatadir, "relationPred_relation.xml").toAbsolutePath().toFile();
+    @Test(dataProvider = "calculateScoreTestCases")
+    void calculateScore(Path iPredictedRelBiocXML, Path iTrainingDataBiocXml , double expectedScore ) throws SAXException, XMLStreamException, ParserConfigurationException, IOException {
+        File sampletraindatafile = iTrainingDataBiocXml.toFile();
+        File samplePreddatafile = iPredictedRelBiocXML.toFile();
 
         BioCCollection predSet =new Parser().getBioCCollection(samplePreddatafile).readCollection();
         BioCCollection trainingSet=new Parser().getBioCCollection(sampletraindatafile).readCollection();
@@ -51,7 +56,7 @@ class PrecisionScoreTest {
 
         //Assert
         DecimalFormat numFormat = new DecimalFormat("0.000");
-        Assert.assertEquals(numFormat.format(.667), numFormat.format(actual));
+        Assert.assertEquals(numFormat.format(expectedScore), numFormat.format(actual));
     }
 
 }

@@ -17,7 +17,7 @@ import org.testng.annotations.*;
 
 
 
-class ParserUnitTest {
+public class ParserUnitTest {
     private Parser sut;
     private static File relationshipDatafile;
     private static final Logger logger =

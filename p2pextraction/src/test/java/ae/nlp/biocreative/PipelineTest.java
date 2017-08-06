@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 
 
-class PipelineTest {
+public class PipelineTest {
     private Pipeline _sut;
     private String _testdatadir;
 

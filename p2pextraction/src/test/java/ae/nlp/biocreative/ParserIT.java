@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 
 
-class ParserIT {
+public class ParserIT {
     private Parser sut;
     private static File tempFile;
     private static final Logger logger =

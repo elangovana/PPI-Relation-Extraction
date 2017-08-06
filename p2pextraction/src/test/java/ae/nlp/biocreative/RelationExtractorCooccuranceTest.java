@@ -20,7 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.xml.HasXPath.hasXPath;
 
 
-class RelationExtractorCooccuranceTest {
+public class RelationExtractorCooccuranceTest {
 
     private RelationExtractorCooccurance sut;
     private String testdatadir;
