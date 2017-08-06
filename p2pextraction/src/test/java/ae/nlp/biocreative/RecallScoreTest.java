@@ -36,14 +36,15 @@ public class RecallScoreTest {
 
     @DataProvider(name = "calculateScoreTestCases")
     public static Object[][] calculateScoreTestCases() {
-        String testdatadir = ConfigHelper.getTestDataDirectory();
-        return new Object[][] {{Paths.get(testdatadir,"relationPred_relation.xml"), Paths.get(testdatadir,"relationtrainingdata.xml"), .750}};
+        return new Object[][] {{"relationPred_relation.xml","relationtrainingdata.xml", .750}};
     }
 
     @Test(dataProvider = "calculateScoreTestCases")
-    void calculateScore(Path iPredictedRelBiocXML, Path iTrainingDataBiocXml , double expectedScore ) throws SAXException, XMLStreamException, ParserConfigurationException, IOException {
-        File sampletraindatafile = iTrainingDataBiocXml.toFile();
-        File samplePreddatafile = iPredictedRelBiocXML.toFile();
+    void calculateScore(String iPredictedRelBiocXML, String iTrainingDataBiocXml , double expectedScore ) throws SAXException, XMLStreamException, ParserConfigurationException, IOException {
+        String testdatadir = ConfigHelper.getTestDataDirectory();
+
+        File sampletraindatafile =Paths.get(testdatadir, iTrainingDataBiocXml).toFile();
+        File samplePreddatafile = Paths.get(testdatadir,iPredictedRelBiocXML).toFile();
 
         BioCCollection predSet =new Parser().getBioCCollection(samplePreddatafile).readCollection();
         BioCCollection trainingSet=new Parser().getBioCCollection(sampletraindatafile).readCollection();

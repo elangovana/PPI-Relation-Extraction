@@ -32,21 +32,26 @@ public class PipelineTest {
     void tearDown() {
 
     }
+    @DataProvider(name = "runRelationExtractionTestCases")
+    public static Object[][] runRelationExtractionTestCases() {
+        return new Object[][] {{"relationtrainingdata_gnormplus_out.xml", "relationtrainingdata.xml"}};
+    }
 
-    @Test
-    void runRelationExtraction() throws SAXException, XMLStreamException, ParserConfigurationException, IOException, InterruptedException {
-//Arrange
-        File geneAnnotationsPredFilePath = Paths.get(_testdatadir, "relationtrainingdata_gnormplus_out.xml").toAbsolutePath().toFile();
-        File trainingDataFilePath = Paths.get(_testdatadir, "relationtrainingdata.xml").toAbsolutePath().toFile();
+
+    @Test(dataProvider = "runRelationExtractionTestCases")
+    void runRelationExtraction(String geneAnnotatedBioCXml , String trainingDataBiocXml ) throws SAXException, XMLStreamException, ParserConfigurationException, IOException, InterruptedException {
+        //Arrange
+        File geneAnnotationsPredFilePath = Paths.get(_testdatadir, geneAnnotatedBioCXml).toFile();
+        File trainingDataFilePath = Paths.get(_testdatadir, trainingDataBiocXml).toFile();
 
         //Act
-        HashMap<String, Double> actual= _sut.runRelationExtraction( geneAnnotationsPredFilePath.getAbsolutePath(),trainingDataFilePath.getAbsolutePath());
+        HashMap<String, Double> actual = _sut.runRelationExtraction(geneAnnotationsPredFilePath.getAbsolutePath(), trainingDataFilePath.getAbsolutePath());
 
         //TODO:Fix Assert
-        for (String scoringMethod: actual.keySet()   ) {
-            System.out.printf("%s %f\n",scoringMethod, actual.get(scoringMethod));
+        for (String scoringMethod : actual.keySet()) {
+            System.out.printf("%s %f\n", scoringMethod, actual.get(scoringMethod));
 
         }
-     }
+    }
 
 }
