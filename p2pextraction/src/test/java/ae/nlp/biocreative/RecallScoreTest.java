@@ -38,8 +38,12 @@ class RecallScoreTest {
 
     void calculateScore() throws SAXException, XMLStreamException, ParserConfigurationException, IOException {
         //Arrange
-        File sampletraindatafile = Paths.get(_testdatadir, "relationtrainingdata.xml").toAbsolutePath().toFile();
-        File samplePreddatafile = Paths.get(_testdatadir, "relationPred_relation.xml").toAbsolutePath().toFile();
+        String iPredictedRelBiocXML = "relationPred_relation.xml";
+        String iTrainingDataBiocXml = "relationtrainingdata.xml";
+        double expectedScore = .750;
+
+        File sampletraindatafile = Paths.get(_testdatadir, iTrainingDataBiocXml).toAbsolutePath().toFile();
+        File samplePreddatafile = Paths.get(_testdatadir, iPredictedRelBiocXML).toAbsolutePath().toFile();
 
         BioCCollection predSet =new Parser().getBioCCollection(samplePreddatafile).readCollection();
         BioCCollection trainingSet=new Parser().getBioCCollection(sampletraindatafile).readCollection();
@@ -49,7 +53,7 @@ class RecallScoreTest {
 
         //Assert
         DecimalFormat numFormat = new DecimalFormat("0.000");
-        assertEquals(numFormat.format(.750), numFormat.format(actual));
+        assertEquals(numFormat.format(expectedScore), numFormat.format(actual));
     }
 
 }
