@@ -52,10 +52,9 @@ class RecallScore implements  Scorer  {
         for (BioCDocument doc:trainingSet.getDocuments()   ) {
             for (BioCRelation relation: doc.getRelations()) {
 
-                Optional<String> ppiRel = relation.getInfon("relation");
+                BiocP2PRelation ppiRel = new BiocP2PRelation(relation);
                 //If not ppim relation ignore relation
-                if (!(ppiRel.isPresent() && ppiRel.get().equals("PPIm"))) continue;
-
+                if (!ppiRel.getRelationType().equals(BiocP2PRelation.RelationTypePPIM)) continue;
                  total++;
 
             }
