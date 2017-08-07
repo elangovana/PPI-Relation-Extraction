@@ -32,14 +32,19 @@ public class PipelineTest {
     void tearDown() {
 
     }
+
     @DataProvider(name = "runRelationExtractionTestCases")
     public static Object[][] runRelationExtractionTestCases() {
-        return new Object[][] {{"relationtrainingdata_gnormplus_out.xml", "relationtrainingdata.xml"}};
+        return new Object[][]{
+                {"relationtrainingdata_gnormplus_out.xml", "relationtrainingdata.xml"}
+                , {"PMtask_Relations_TrainingSet_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml"}
+        };
+
     }
 
 
     @Test(dataProvider = "runRelationExtractionTestCases")
-    void runRelationExtraction(String geneAnnotatedBioCXml , String trainingDataBiocXml ) throws SAXException, XMLStreamException, ParserConfigurationException, IOException, InterruptedException {
+    void runRelationExtraction(String geneAnnotatedBioCXml, String trainingDataBiocXml) throws SAXException, XMLStreamException, ParserConfigurationException, IOException, InterruptedException {
         //Arrange
         File geneAnnotationsPredFilePath = Paths.get(_testdatadir, geneAnnotatedBioCXml).toFile();
         File trainingDataFilePath = Paths.get(_testdatadir, trainingDataBiocXml).toFile();

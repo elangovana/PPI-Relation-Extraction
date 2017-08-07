@@ -36,7 +36,7 @@ public class RecallScoreTest {
 
     @DataProvider(name = "calculateScoreTestCases")
     public static Object[][] calculateScoreTestCases() {
-        return new Object[][] {{"relationPred_relation.xml","relationtrainingdata.xml", .750}};
+        return new Object[][] {{"relationPred_relation.xml","relationtrainingdata.xml", 1.0}};
     }
 
     @Test(dataProvider = "calculateScoreTestCases")

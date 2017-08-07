@@ -29,7 +29,7 @@ public class PrecisionScore implements Scorer {
                 if(! (predPpiRel.isPresent() && predPpiRel.get().equals("PPIm"))) continue;
 
                String Gene1 = predRelation.getInfon("Gene1").get();
-               String Gene2 =  predRelation.getInfon("Gene1").get();
+               String Gene2 =  predRelation.getInfon("Gene2").get();
 
                if (ExistsInTraining(trainingDoc, Gene1, Gene2)){
                    predCorrectRel++;
@@ -56,7 +56,7 @@ public class PrecisionScore implements Scorer {
             if (!(ppiRel.isPresent() && ppiRel.get().equals("PPIm"))) continue;
 
             String trainGene1 = relation.getInfon("Gene1").get();
-            String trainGene2 =  relation.getInfon("Gene1").get();
+            String trainGene2 =  relation.getInfon("Gene2").get();
 
             //Use hashmap to check for undirected relationship between 2 genes
             HashSet<String> trainGenesRelHash = new HashSet<>();

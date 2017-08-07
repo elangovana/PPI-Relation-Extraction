@@ -7,9 +7,13 @@ import com.pengyifan.bioc.BioCRelation;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 
 class RecallScore implements  Scorer  {
+    private static Logger theLogger =
+            Logger.getLogger(RecallScore.class.getName());
+
 
     private HashMap<String, BioCDocument> _docHashMap;
 
@@ -28,7 +32,7 @@ class RecallScore implements  Scorer  {
                 if(! (predPpiRel.isPresent() && predPpiRel.get().equals("PPIm"))) continue;
 
                String Gene1 = predRelation.getInfon("Gene1").get();
-               String Gene2 =  predRelation.getInfon("Gene1").get();
+               String Gene2 =  predRelation.getInfon("Gene2").get();
 
                if (ExistsInTraining(trainingDoc, Gene1, Gene2)){
                    predCorrectRel++;
@@ -66,7 +70,7 @@ class RecallScore implements  Scorer  {
             if (!(ppiRel.isPresent() && ppiRel.get().equals("PPIm"))) continue;
 
             String trainGene1 = relation.getInfon("Gene1").get();
-            String trainGene2 =  relation.getInfon("Gene1").get();
+            String trainGene2 =  relation.getInfon("Gene2").get();
 
             //Use hashmap to check for undirected relationship between 2 genes
             HashSet<String> trainGenesRelHash = new HashSet<>();
@@ -78,7 +82,7 @@ class RecallScore implements  Scorer  {
 
 
         }
-
+        theLogger.finest(String.format("The document id %s does not contain any relationship between %s & %s in the training set", trainingDoc.getID(), predGeneRelGene1, predGeneRelGene2));
         return false;
     }
 

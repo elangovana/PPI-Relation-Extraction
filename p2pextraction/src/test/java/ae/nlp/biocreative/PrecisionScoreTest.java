@@ -40,7 +40,7 @@ public class PrecisionScoreTest {
     @DataProvider(name = "calculateScoreTestCases")
     public static Object[][] calculateScoreTestCases() {
 
-        return new Object[][] {{"relationPred_relation.xml", "relationtrainingdata.xml", .667}};
+        return new Object[][] {{"relationPred_relation.xml", "relationtrainingdata.xml", .889}};
     }
 
     @Test(dataProvider = "calculateScoreTestCases")

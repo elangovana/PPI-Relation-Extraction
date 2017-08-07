@@ -46,6 +46,7 @@ public class RelationExtractorCooccurance implements RelationExtractor {
         for (int i = 0; i < genesInPassage.size(); i++) {
 
             for (int j = i + 1; j < genesInPassage.size(); j++) {
+                 //Ignore if the relationship already exists
                 if (CheckForDuplicateRelation(genesInDoc, genesInPassage.get(i), genesInPassage.get(j))) continue;
 
                 BioCRelation relation = new BioCRelation();
