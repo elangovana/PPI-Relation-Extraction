@@ -27,12 +27,14 @@ class RecallScore implements  Scorer  {
             BioCDocument trainingDoc = trainDocHashMap.get(predDoc.getID());
 
             for (BioCRelation predRelation : predDoc.getRelations()){
-                Optional<String> predPpiRel = predRelation.getInfon("relation");
-                //If not ppim relation ignore relation
-                if(! (predPpiRel.isPresent() && predPpiRel.get().equals("PPIm"))) continue;
 
-               String Gene1 = predRelation.getInfon("Gene1").get();
-               String Gene2 =  predRelation.getInfon("Gene2").get();
+                BiocP2PRelation predp2pRel =  new BiocP2PRelation(predRelation);
+                //If not ppim relation ignore
+                if(! predp2pRel.getRelationType().equals(BiocP2PRelation.RelationTypePPIM)) continue;
+
+                String Gene1 = predp2pRel.getGene1();
+                String Gene2 = predp2pRel.getGene2();
+
 
                if (ExistsInTraining(trainingDoc, Gene1, Gene2)){
                    predCorrectRel++;
@@ -65,12 +67,12 @@ class RecallScore implements  Scorer  {
     private boolean ExistsInTraining(BioCDocument trainingDoc, String predGeneRelGene1, String predGeneRelGene2) {
         for (BioCRelation relation: trainingDoc.getRelations()) {
 
-            Optional<String> ppiRel = relation.getInfon("relation");
-            //If not ppim relation ignore relation
-            if (!(ppiRel.isPresent() && ppiRel.get().equals("PPIm"))) continue;
+            BiocP2PRelation trainp2pRel =  new BiocP2PRelation(relation);
+            //If not ppim relation ignore
+            if(! trainp2pRel.getRelationType().equals(BiocP2PRelation.RelationTypePPIM)) continue;
 
-            String trainGene1 = relation.getInfon("Gene1").get();
-            String trainGene2 =  relation.getInfon("Gene2").get();
+            String trainGene1 = trainp2pRel.getGene1();
+            String trainGene2 = trainp2pRel.getGene2();
 
             //Use hashmap to check for undirected relationship between 2 genes
             HashSet<String> trainGenesRelHash = new HashSet<>();
