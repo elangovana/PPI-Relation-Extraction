@@ -7,9 +7,12 @@ import com.pengyifan.bioc.BioCRelation;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 
 public class PrecisionScore implements Scorer {
+    private static Logger theLogger =
+            Logger.getLogger(PrecisionScore.class.getName());
 
     private HashMap<String, BioCDocument> _docHashMap;
 
@@ -67,6 +70,7 @@ public class PrecisionScore implements Scorer {
 
 
         }
+        theLogger.finest(String.format("The document id %s does not contain any relationship between %s & %s in the training set", trainingDoc.getID(), predGeneRelGene1, predGeneRelGene2));
 
         return  result;
     }
