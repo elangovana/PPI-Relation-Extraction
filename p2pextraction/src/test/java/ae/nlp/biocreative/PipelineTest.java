@@ -11,6 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -34,23 +35,24 @@ public class PipelineTest {
     }
 
     @DataProvider(name = "runRelationExtractionTestCases")
-    public static Object[][] runRelationExtractionTestCases() {
+    public static Object[][] runRelationExtractionTestCases() throws IOException {
+        String tmpOutPath = Files.createTempDirectory("pipelineOut").toString();
         return new Object[][]{
-                {"relationtrainingdata_gnormplus_out.xml", "relationtrainingdata.xml"}
-                , {"PMtask_Relations_TrainingSet_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml"}
+                {"relationtrainingdata_gnormplus_out.xml", "relationtrainingdata.xml",tmpOutPath}
+                , {"PMtask_Relations_TrainingSet_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml",tmpOutPath}
         };
 
     }
 
 
     @Test(dataProvider = "runRelationExtractionTestCases")
-    void runRelationExtraction(String geneAnnotatedBioCXml, String trainingDataBiocXml) throws SAXException, XMLStreamException, ParserConfigurationException, IOException, InterruptedException {
+    void runRelationExtraction(String geneAnnotatedBioCXml, String trainingDataBiocXml, String outputPath) throws SAXException, XMLStreamException, ParserConfigurationException, IOException, InterruptedException {
         //Arrange
         File geneAnnotationsPredFilePath = Paths.get(_testdatadir, geneAnnotatedBioCXml).toFile();
         File trainingDataFilePath = Paths.get(_testdatadir, trainingDataBiocXml).toFile();
 
         //Act
-        HashMap<String, Double> actual = _sut.runRelationExtraction(geneAnnotationsPredFilePath.getAbsolutePath(), trainingDataFilePath.getAbsolutePath());
+        HashMap<String, Double> actual = _sut.runRelationExtraction(geneAnnotationsPredFilePath.getAbsolutePath(), trainingDataFilePath.getAbsolutePath(), outputPath);
 
         //TODO:Fix Assert
         for (String scoringMethod : actual.keySet()) {
