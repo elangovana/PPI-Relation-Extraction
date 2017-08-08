@@ -40,17 +40,18 @@ public class PrecisionScoreTest {
     @DataProvider(name = "calculateScoreTestCases")
     public static Object[][] calculateScoreTestCases() {
 
-        return new Object[][] {{"relationPred_relation.xml", "relationtrainingdata.xml", .889}};
+        return new Object[][]{{"relationPred_relation.xml", "relationtrainingdata.xml", .889}
+                , {"ScoreTestcaseRecall1_Pred.xml", "ScoreTestcaseRecall1_Train.xml", .333}};
     }
 
     @Test(dataProvider = "calculateScoreTestCases")
-    void calculateScore(String iPredictedRelBiocXML, String iTrainingDataBiocXml , double expectedScore ) throws SAXException, XMLStreamException, ParserConfigurationException, IOException {
+    void calculateScore(String iPredictedRelBiocXML, String iTrainingDataBiocXml, double expectedScore) throws SAXException, XMLStreamException, ParserConfigurationException, IOException {
         String testdatadir = ConfigHelper.getTestDataDirectory();
-        File sampletraindatafile = Paths.get(testdatadir,iTrainingDataBiocXml).toFile();
-        File samplePreddatafile = Paths.get(testdatadir,iPredictedRelBiocXML).toFile();
-        BioCCollection predSet =new Parser().getBioCCollection(samplePreddatafile).readCollection();
-        BioCCollection trainingSet=new Parser().getBioCCollection(sampletraindatafile).readCollection();
-        
+        File sampletraindatafile = Paths.get(testdatadir, iTrainingDataBiocXml).toFile();
+        File samplePreddatafile = Paths.get(testdatadir, iPredictedRelBiocXML).toFile();
+        BioCCollection predSet = new Parser().getBioCCollection(samplePreddatafile).readCollection();
+        BioCCollection trainingSet = new Parser().getBioCCollection(sampletraindatafile).readCollection();
+
         //Act
         double actual = _sut.CalculateScore(trainingSet, predSet);
 
