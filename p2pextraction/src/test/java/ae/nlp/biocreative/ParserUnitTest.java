@@ -48,7 +48,7 @@ public class ParserUnitTest {
         //Act
         BioCCollectionReader actual = sut.getBioCCollection(relationshipDatafile);
         //Assert
-        Assert.assertEquals(7,actual.readCollection().getDocmentCount());
+        Assert.assertEquals(actual.readCollection().getDocmentCount(),7);
     }
 
 

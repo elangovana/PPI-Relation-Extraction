@@ -35,7 +35,7 @@ public class RelationExtractorCooccuranceTest {
         BioCCollection actual= sut.Extract(new Parser().getBioCCollection(sampletraindatafile));
 
         //Smoke check
-        Assert.assertEquals(new Parser().getBioCCollection(sampletraindatafile).readCollection().getDocmentCount(), actual.getDocmentCount());
+        Assert.assertEquals( actual.getDocmentCount(),new Parser().getBioCCollection(sampletraindatafile).readCollection().getDocmentCount());
        //TODO: Check for relation
     }
 

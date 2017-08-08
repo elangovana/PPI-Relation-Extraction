@@ -55,7 +55,7 @@ public class RecallScoreTest {
 
         //Assert
         DecimalFormat numFormat = new DecimalFormat("0.000");
-        Assert.assertEquals (numFormat.format(expectedScore), numFormat.format(actual));
+        Assert.assertEquals ( numFormat.format(actual),numFormat.format(expectedScore));
     }
 
 }
