@@ -1,0 +1,262 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<collection>
+    <source></source>
+    <date>2017-08-08</date>
+    <key></key>
+<document>
+<id>18273061</id>
+<passage>
+    <infon key="type">title</infon>
+    <offset>0</offset>
+    <text>Structural basis for a novel intrapeptidyl H-bond and reverse binding of c-Cbl-TKB domain substrates.</text>
+    <annotation id="0">
+        <infon key="NCBI GENE">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="73" length="5"/>
+        <text>c-Cbl</text>
+    </annotation>
+    <annotation id="2">
+        <infon key="NCBI Gene">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="73" length="5"/>
+        <text>c-Cbl</text>
+    </annotation>
+</passage>
+<passage>
+    <infon key="type">abstract</infon>
+    <offset>102</offset>
+    <text>The c-Cbl tyrosine kinase binding domain (Cbl-TKB), essentially an 'embedded' SH2 domain, has a critical role in targeting proteins for ubiquitination. To address how this domain can bind to disparate recognition mofits and to determine whether this results in variations in substrate-binding affinity, we compared crystal structures of the Cbl-TKB domain complexed with phosphorylated peptides of Sprouty2, Sprouty4, epidermal growth factor receptor, Syk, and c-Met receptors and validated the binding with point-mutational analyses using full-length proteins. An obligatory, intrapeptidyl H-bond between the phosphotyrosine and the conserved asparagine or adjacent arginine is essential for binding and orients the peptide into a positively charged pocket on c-Cbl. Surprisingly, c-Met bound to Cbl in the reverse direction, which is unprecedented for SH2 domain binding. The necessity of this intrapeptidyl H-bond was confirmed with isothermal titration calorimetry experiments that also showed Sprouty2 to have the highest binding affinity to c-Cbl; this may enable the selective sequestration of c-Cbl from other target proteins.</text>
+    <annotation id="3">
+        <infon key="NCBI GENE">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="106" length="5"/>
+        <text>c-Cbl</text>
+    </annotation>
+    <annotation id="4">
+        <infon key="NCBI GENE">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="144" length="3"/>
+        <text>Cbl</text>
+    </annotation>
+    <annotation id="5">
+        <infon key="NCBI GENE">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="443" length="3"/>
+        <text>Cbl</text>
+    </annotation>
+    <annotation id="6">
+        <infon key="NCBI GENE">10253</infon>
+        <infon key="type">Gene</infon>
+        <location offset="500" length="8"/>
+        <text>Sprouty2</text>
+    </annotation>
+    <annotation id="7">
+        <infon key="NCBI GENE">81848</infon>
+        <infon key="type">Gene</infon>
+        <location offset="510" length="8"/>
+        <text>Sprouty4</text>
+    </annotation>
+    <annotation id="8">
+        <infon key="NCBI GENE">1956</infon>
+        <infon key="type">Gene</infon>
+        <location offset="520" length="32"/>
+        <text>epidermal growth factor receptor</text>
+    </annotation>
+    <annotation id="9">
+        <infon key="NCBI GENE">6850</infon>
+        <infon key="type">Gene</infon>
+        <location offset="554" length="3"/>
+        <text>Syk</text>
+    </annotation>
+    <annotation id="10">
+        <infon key="NCBI GENE">4233</infon>
+        <infon key="type">Gene</infon>
+        <location offset="563" length="5"/>
+        <text>c-Met</text>
+    </annotation>
+    <annotation id="11">
+        <infon key="NCBI GENE">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="863" length="5"/>
+        <text>c-Cbl</text>
+    </annotation>
+    <annotation id="12">
+        <infon key="NCBI GENE">4233</infon>
+        <infon key="type">Gene</infon>
+        <location offset="884" length="5"/>
+        <text>c-Met</text>
+    </annotation>
+    <annotation id="13">
+        <infon key="NCBI GENE">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="899" length="3"/>
+        <text>Cbl</text>
+    </annotation>
+    <annotation id="14">
+        <infon key="NCBI GENE">10253</infon>
+        <infon key="type">Gene</infon>
+        <location offset="1100" length="8"/>
+        <text>Sprouty2</text>
+    </annotation>
+    <annotation id="15">
+        <infon key="NCBI GENE">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="1149" length="5"/>
+        <text>c-Cbl</text>
+    </annotation>
+    <annotation id="16">
+        <infon key="NCBI GENE">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="1203" length="5"/>
+        <text>c-Cbl</text>
+    </annotation>
+    <annotation id="17">
+        <infon key="NCBI Gene">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="106" length="5"/>
+        <text>c-Cbl</text>
+    </annotation>
+    <annotation id="23">
+        <infon key="NCBI Gene">81848</infon>
+        <infon key="type">Gene</infon>
+        <location offset="510" length="8"/>
+        <text>Sprouty4</text>
+    </annotation>
+    <annotation id="24">
+        <infon key="NCBI Gene">1956</infon>
+        <infon key="type">Gene</infon>
+        <location offset="520" length="32"/>
+        <text>epidermal growth factor receptor</text>
+    </annotation>
+    <annotation id="25">
+        <infon key="NCBI Gene">6850</infon>
+        <infon key="type">Gene</infon>
+        <location offset="554" length="3"/>
+        <text>Syk</text>
+    </annotation>
+    <annotation id="26">
+        <infon key="NCBI Gene">4233</infon>
+        <infon key="type">Gene</infon>
+        <location offset="563" length="5"/>
+        <text>c-Met</text>
+    </annotation>
+    <annotation id="27">
+        <infon key="NCBI Gene">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="863" length="5"/>
+        <text>c-Cbl</text>
+    </annotation>
+    <annotation id="28">
+        <infon key="NCBI Gene">4233</infon>
+        <infon key="type">Gene</infon>
+        <location offset="884" length="5"/>
+        <text>c-Met</text>
+    </annotation>
+    <annotation id="29">
+        <infon key="NCBI Gene">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="899" length="3"/>
+        <text>Cbl</text>
+    </annotation>
+    <annotation id="32">
+        <infon key="NCBI Gene">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="1149" length="5"/>
+        <text>c-Cbl</text>
+    </annotation>
+    <annotation id="33">
+        <infon key="NCBI Gene">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="1203" length="5"/>
+        <text>c-Cbl</text>
+    </annotation>
+    <annotation id="34">
+        <infon key="NCBI Gene">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="443" length="3"/>
+        <text>Cbl</text>
+    </annotation>
+    <annotation id="35">
+        <infon key="NCBI Gene">867</infon>
+        <infon key="type">Gene</infon>
+        <location offset="144" length="3"/>
+        <text>Cbl</text>
+    </annotation>
+</passage>
+<relation id="6850#4233">
+    <infon key="Gene1">6850</infon>
+    <infon key="Gene2">4233</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="6850#10253">
+    <infon key="Gene1">6850</infon>
+    <infon key="Gene2">10253</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="6850#867">
+    <infon key="Gene1">6850</infon>
+    <infon key="Gene2">867</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="6850#1956">
+    <infon key="Gene1">6850</infon>
+    <infon key="Gene2">1956</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="6850#81848">
+    <infon key="Gene1">6850</infon>
+    <infon key="Gene2">81848</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="4233#10253">
+    <infon key="Gene1">4233</infon>
+    <infon key="Gene2">10253</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="4233#867">
+    <infon key="Gene1">4233</infon>
+    <infon key="Gene2">867</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="4233#1956">
+    <infon key="Gene1">4233</infon>
+    <infon key="Gene2">1956</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="4233#81848">
+    <infon key="Gene1">4233</infon>
+    <infon key="Gene2">81848</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="10253#867">
+    <infon key="Gene1">10253</infon>
+    <infon key="Gene2">867</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="10253#1956">
+    <infon key="Gene1">10253</infon>
+    <infon key="Gene2">1956</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="10253#81848">
+    <infon key="Gene1">10253</infon>
+    <infon key="Gene2">81848</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="867#1956">
+    <infon key="Gene1">867</infon>
+    <infon key="Gene2">1956</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="867#81848">
+    <infon key="Gene1">867</infon>
+    <infon key="Gene2">81848</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+<relation id="1956#81848">
+    <infon key="Gene1">1956</infon>
+    <infon key="Gene2">81848</infon>
+    <infon key="relation">PPIm</infon>
+</relation>
+</document>
+</collection>
