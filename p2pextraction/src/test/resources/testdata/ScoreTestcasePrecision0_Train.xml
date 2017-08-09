@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<collection>
+    <source>PubTator</source>
+    <date>2017-06-02</date>
+    <key>BioC.key</key>
+    <document>
+        <id>DummyDoc1</id>
+        <passage>
+            <infon key="type">title</infon>
+            <offset>0</offset>
+            <text>This is a test case to make sure that precision and recall only identify relationships as correct when  it is within the same document
+            </text>
+            <annotation id="0">
+                <infon key="NCBI GENE">DummyGene1</infon>
+                <infon key="type">Gene</infon>
+                <location offset="73" length="5"/>
+                <text>c-Cbl</text>
+            </annotation>
+        </passage>
+        <passage>
+            <infon key="type">abstract</infon>
+            <offset>102</offset>
+            <text>This is a test case to make sure that precision and recall only identify relationships as correct when  it is within the same document
+           Please ignore the annotations as they are not real as  this testcase only tests for relationship correctness
+            </text>
+            <annotation id="1">
+                <infon key="NCBI GENE">DummyGene1</infon>
+                <infon key="type">Gene</infon>
+                <location offset="106" length="5"/>
+                <text>c-Cbl</text>
+            </annotation>
+            <annotation id="2">
+                <infon key="NCBI GENE">DummyGene2</infon>
+                <infon key="type">Gene</infon>
+                <location offset="144" length="3"/>
+                <text>Cbl</text>
+            </annotation>
+            <annotation id="3">
+                <infon key="NCBI GENE">DummyGene3</infon>
+                <infon key="type">Gene</infon>
+                <location offset="443" length="3"/>
+                <text>Cbl</text>
+            </annotation>
+
+        </passage>
+        <relation id="R0">
+            <infon key="Gene1">DummyGene1</infon>
+            <infon key="Gene2">DummyGene2</infon>
+            <infon key="relation">PPIm</infon>
+        </relation>
+
+    </document>
+    <document>
+        <id>DummyDoc2</id>
+        <passage>
+            <infon key="type">title</infon>
+            <offset>0</offset>
+            <text>This is a test case to make sure that precision and recall only identify relationships as correct when  it is within the same document
+            </text>
+            <annotation id="0">
+                <infon key="NCBI GENE">DummyGene1</infon>
+                <infon key="type">Gene</infon>
+                <location offset="73" length="5"/>
+                <text>c-Cbl</text>
+            </annotation>
+        </passage>
+        <passage>
+            <infon key="type">abstract</infon>
+            <offset>102</offset>
+            <text>This is a test case to make sure that precision and recall only identify relationships as correct when  it is within the same document
+                Please ignore the annotations as they are not real as  this testcase only tests for relationship correctness
+            </text>
+            <annotation id="1">
+                <infon key="NCBI GENE">DummyGene1</infon>
+                <infon key="type">Gene</infon>
+                <location offset="106" length="5"/>
+                <text>c-Cbl</text>
+            </annotation>
+            <annotation id="2">
+                <infon key="NCBI GENE">DummyGene2</infon>
+                <infon key="type">Gene</infon>
+                <location offset="144" length="3"/>
+                <text>Cbl</text>
+            </annotation>
+            <annotation id="3">
+                <infon key="NCBI GENE">DummyGene3</infon>
+                <infon key="type">Gene</infon>
+                <location offset="443" length="3"/>
+                <text>Cbl</text>
+            </annotation>
+
+        </passage>
+        <relation id="R0">
+            <infon key="Gene1">DummyGene2</infon>
+            <infon key="Gene2">DummyGene3</infon>
+            <infon key="relation">PPIm</infon>
+        </relation>
+
+    </document>
+</collection>
