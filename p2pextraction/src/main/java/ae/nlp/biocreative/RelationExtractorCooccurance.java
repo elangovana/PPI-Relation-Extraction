@@ -43,22 +43,17 @@ public class RelationExtractorCooccurance implements RelationExtractor {
     }
 
     private void addRelationToDoc(BioCDocument doc, HashSet<String> genesInDoc, List<String> genesInPassage) {
+
+
         for (int i = 0; i < genesInPassage.size(); i++) {
 
             for (int j = i + 1; j < genesInPassage.size(); j++) {
                  //Ignore if the relationship already exists
-                if (CheckForDuplicateRelation(genesInDoc, genesInPassage.get(i), genesInPassage.get(j))) continue;
+                String gene1 = genesInPassage.get(i);
+                String gene2 = genesInPassage.get(j);
+                if (CheckForDuplicateRelation(genesInDoc, gene1, gene2)) continue;
 
-                BioCRelation relation = new BioCRelation();
-
-
-                Map<String, String> infon = new HashMap<>();
-                infon.put("Gene1", genesInPassage.get(i));
-                infon.put("Gene2", genesInPassage.get(j));
-                infon.put("relation", "PPIm");
-                relation.setInfons(infon);
-
-                relation.setID(genesInPassage.get(i) + "#" + genesInPassage.get(j));
+                BioCRelation relation = getBioCRelation(gene1, gene2);
 
 
                 doc.addRelation(relation);
@@ -66,6 +61,20 @@ public class RelationExtractorCooccurance implements RelationExtractor {
 
             }
         }
+    }
+
+    private BioCRelation getBioCRelation(String gene1, String gene2) {
+        BioCRelation relation = new BioCRelation();
+
+
+        Map<String, String> infon = new HashMap<>();
+        infon.put("Gene1", gene1);
+        infon.put("Gene2", gene2);
+        infon.put("relation", "PPIm");
+        relation.setInfons(infon);
+
+        relation.setID(gene1 + "#" + gene2);
+        return relation;
     }
 
     private boolean CheckForDuplicateRelation(HashSet<String> geneList, String gene1, String gene2) {
