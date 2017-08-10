@@ -39,6 +39,7 @@ public class RecallScoreTest {
         return new Object[][] {{"relationPred_relation.xml","relationtrainingdata.xml", 1.0}
                 ,{"ScoreTestcaseRecall1_Pred.xml", "ScoreTestcaseRecall1_Train.xml", 1.0}
                 ,{"ScoreTestcasePrecision0_Pred.xml", "ScoreTestcasePrecision0_Train.xml", 0.0}
+                ,{"PMtask_Relations_TrainingSet.xml", "PMtask_Relations_TrainingSet.xml", 1.0}
                 ,{"ScoreTestcasePrecision1_Pred.xml", "ScoreTestcasePrecision1_Train.xml", 1.0}};
     }
 
