@@ -17,13 +17,13 @@ public class RelationExtractorCooccurance implements RelationExtractor {
             for (Iterator<BioCDocument> doci = biocCollectionReader.readCollection().documentIterator(); doci.hasNext(); ) {
                 BioCDocument doc = doci.next();
 
-                HashSet<String> genesInDoc = new HashSet<>();
+                HashSet<String> existingGeneRelationsFromPreviousPassage = new HashSet<>();
 
                 for (BioCPassage passage : doc.getPassages()) {
                     List<String> genesInPassage = getGenes(passage);
-                    addRelationToDoc(doc, genesInDoc, genesInPassage);
+                    addRelationToDoc(doc, existingGeneRelationsFromPreviousPassage, genesInPassage);
                     //To avoid duplicates
-                    genesInDoc.addAll(genesInPassage);
+                    existingGeneRelationsFromPreviousPassage.addAll(genesInPassage);
 
                 }
                 outBiocCollection.addDocument(doc);
@@ -42,16 +42,17 @@ public class RelationExtractorCooccurance implements RelationExtractor {
 
     }
 
-    private void addRelationToDoc(BioCDocument doc, HashSet<String> genesInDoc, List<String> genesInPassage) {
+    private void addRelationToDoc(BioCDocument doc, HashSet<String> geneRelationShipsAlreadyAdded, List<String> genesInPassage) {
 
 
         for (int i = 0; i < genesInPassage.size(); i++) {
 
             for (int j = i + 1; j < genesInPassage.size(); j++) {
+
                  //Ignore if the relationship already exists
                 String gene1 = genesInPassage.get(i);
                 String gene2 = genesInPassage.get(j);
-                if (CheckForDuplicateRelation(genesInDoc, gene1, gene2)) continue;
+                if (CheckForDuplicateRelation(geneRelationShipsAlreadyAdded, gene1, gene2)) continue;
 
                 BioCRelation relation = getBioCRelation(gene1, gene2);
 
