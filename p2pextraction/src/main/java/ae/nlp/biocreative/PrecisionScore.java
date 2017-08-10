@@ -34,7 +34,7 @@ public class PrecisionScore implements Scorer {
                String Gene1 = predp2pRel.getGene1();
                String Gene2 = predp2pRel.getGene2();
 
-               if (ExistsInTraining(trainingDoc, Gene1, Gene2)){
+               if (RelationExistsInDoc(trainingDoc, Gene1, Gene2)){
                    predCorrectRel++;
                }
                predTotalRel++;
@@ -50,30 +50,35 @@ public class PrecisionScore implements Scorer {
         return this.getClass().getName();
     }
 
-    private boolean ExistsInTraining(BioCDocument trainingDoc, String predGeneRelGene1, String predGeneRelGene2) {
-        boolean result = false;
-        for (BioCRelation trainRelation: trainingDoc.getRelations()) {
-            BiocP2PRelation trainp2pRel =  new BiocP2PRelation(trainRelation);
-            //If not ppim relation ignore
-            if(! trainp2pRel.getRelationType().equals(BiocP2PRelation.RelationTypePPIM)) continue;
+    private boolean RelationExistsInDoc(BioCDocument refDocument, String geneToMatch1, String geneToMatch2) {
+        for (BioCRelation relation: refDocument.getRelations()) {
 
-            String trainGene1 = trainp2pRel.getGene1();
-            String trainGene2 = trainp2pRel.getGene2();
+            BiocP2PRelation refp2pRel =  new BiocP2PRelation(relation);
+            //If not ppim relation ignore
+            if(! refp2pRel.getRelationType().equals(BiocP2PRelation.RelationTypePPIM)) continue;
+
+            String refGene1 = refp2pRel.getGene1();
+            String refGene2 = refp2pRel.getGene2();
 
             //Use hashmap to check for undirected relationship between 2 genes
-            HashSet<String> trainGenesRelHash = new HashSet<>();
-            trainGenesRelHash.add(trainGene1);
-            trainGenesRelHash.add(trainGene2);
+            HashSet<String> refGenesRelHash = new HashSet<>();
+            refGenesRelHash.add(refGene1);
+            refGenesRelHash.add(refGene2);
 
-            if (trainGenesRelHash.contains(predGeneRelGene1) && trainGenesRelHash.contains(predGeneRelGene2))
+            //If self relationships then has should be one
+            if (geneToMatch1.equals(geneToMatch2)) {
+                if (refGenesRelHash.size() ==1 && refGenesRelHash.contains(geneToMatch1)) return  true;
+                continue;
+
+            }
+            else if (refGenesRelHash.contains(geneToMatch1) && refGenesRelHash.contains(geneToMatch2))
                 return  true;
 
 
         }
-        theLogger.finest(String.format("The document id %s does not contain any relationship between %s & %s in the training set", trainingDoc.getID(), predGeneRelGene1, predGeneRelGene2));
-
-        return  result;
+        return false;
     }
+
 
     private HashMap<String, BioCDocument>  buildTrainingSetHash(BioCCollection trainingSet) {
         HashMap<String, BioCDocument> docHashMap = new HashMap<>();

@@ -21,6 +21,7 @@ class RecallScore implements  Scorer  {
         //Preprocess , build training set hash
         int actualTotalRel = GetTotalRelation(trainingSet);
         int predCorrectRel = 0;
+        int predActualRel =0;
         HashMap<String, BioCDocument> trainDocHashMap =  buildDocIdDocumentHash(trainingSet);
 
         for (BioCDocument predDoc: predictedSet.getDocuments()) {
@@ -38,16 +39,19 @@ class RecallScore implements  Scorer  {
 
                if (RelationExistsInDoc(trainingDoc, Gene1, Gene2)){
                    predCorrectRel++;
+                   theLogger.finest(String.format("The document id %s contains the relationship between %s & %s in the  training set", trainingDoc.getID(), Gene1, Gene2));
+
                }else{
                    theLogger.finest(String.format("The document id %s does not contain any relationship between %s & %s in the  training set", trainingDoc.getID(), Gene1, Gene2));
 
                }
-
+                predActualRel++;
 
 
             }
         }
         if (theLogger.isLoggable(Level.FINEST))  DebugWriteMissingRelations(trainingSet, predictedSet);
+        theLogger.info(String.format("The predicted total is %d, pred actual correct is %d, training actual is %d ", predActualRel, predCorrectRel, actualTotalRel));
         return  (double)predCorrectRel/(double)actualTotalRel;
     }
 
@@ -93,22 +97,28 @@ class RecallScore implements  Scorer  {
         return  total;
     }
 
-    private boolean RelationExistsInDoc(BioCDocument bioCDocument, String predGeneRelGene1, String predGeneRelGene2) {
-        for (BioCRelation relation: bioCDocument.getRelations()) {
+    private boolean RelationExistsInDoc(BioCDocument refDocument, String geneToMatch1, String geneToMatch2) {
+        for (BioCRelation relation: refDocument.getRelations()) {
 
-            BiocP2PRelation trainp2pRel =  new BiocP2PRelation(relation);
+            BiocP2PRelation refp2pRel =  new BiocP2PRelation(relation);
             //If not ppim relation ignore
-            if(! trainp2pRel.getRelationType().equals(BiocP2PRelation.RelationTypePPIM)) continue;
+            if(! refp2pRel.getRelationType().equals(BiocP2PRelation.RelationTypePPIM)) continue;
 
-            String trainGene1 = trainp2pRel.getGene1();
-            String trainGene2 = trainp2pRel.getGene2();
+            String refGene1 = refp2pRel.getGene1();
+            String refGene2 = refp2pRel.getGene2();
 
             //Use hashmap to check for undirected relationship between 2 genes
-            HashSet<String> trainGenesRelHash = new HashSet<>();
-            trainGenesRelHash.add(trainGene1);
-            trainGenesRelHash.add(trainGene2);
+            HashSet<String> refGenesRelHash = new HashSet<>();
+            refGenesRelHash.add(refGene1);
+            refGenesRelHash.add(refGene2);
 
-            if (trainGenesRelHash.contains(predGeneRelGene1) && trainGenesRelHash.contains(predGeneRelGene2))
+            //If self relationships then has should be one
+            if (geneToMatch1.equals(geneToMatch2)) {
+                if (refGenesRelHash.size() ==1 && refGenesRelHash.contains(geneToMatch1)) return  true;
+                continue;
+
+            }
+            else if (refGenesRelHash.contains(geneToMatch1) && refGenesRelHash.contains(geneToMatch2))
                 return  true;
 
 
