@@ -104,6 +104,11 @@
             <artifactId>GNormPlus</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>lingpipe</groupId>
+            <artifactId>lingpipe</artifactId>
+            <version>4.1.2</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.xmlmatchers/xml-matchers -->
         <dependency>
             <groupId>org.xmlmatchers</groupId>
