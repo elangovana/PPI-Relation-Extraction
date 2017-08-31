@@ -24,27 +24,21 @@ public class LingSentenceExtractor {
         Tokenizer tokenizer = TOKENIZER_FACTORY.tokenizer(text.toCharArray(),0,text.length());
         tokenizer.tokenize(tokenList,whiteList);
 
-        System.out.println(tokenList.size() + " TOKENS");
-        System.out.println(whiteList.size() + " WHITESPACES");
-
         String[] tokens = new String[tokenList.size()];
         String[] whites = new String[whiteList.size()];
         tokenList.toArray(tokens);
         whiteList.toArray(whites);
         int[] sentenceBoundaries = SENTENCE_MODEL.boundaryIndices(tokens,whites);
 
-        System.out.println(sentenceBoundaries.length
-                + " SENTENCE END TOKEN OFFSETS");
-
         if (sentenceBoundaries.length < 1) {
-            System.out.println("No sentence boundaries found.");
+
             return bioCSentenceList;
         }
         int sentStartTok = 0;
         int sentEndTok = 0;
         for (int i = 0; i < sentenceBoundaries.length; ++i) {
             sentEndTok = sentenceBoundaries[i];
-            System.out.println("SENTENCE "+(i+1)+": ");
+
             StringBuilder sb = new StringBuilder();
             for (int j=sentStartTok; j<=sentEndTok; j++) {
                 sb.append(tokens[j]);
@@ -53,7 +47,7 @@ public class LingSentenceExtractor {
 
 
             bioCSentenceList.add(sb.toString());
-            System.out.println(sb.toString());
+
 
             sentStartTok = sentEndTok+1;
 
