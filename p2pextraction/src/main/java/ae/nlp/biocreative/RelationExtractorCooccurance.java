@@ -6,8 +6,13 @@ import com.pengyifan.bioc.io.BioCCollectionReader;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RelationExtractorCooccurance implements RelationExtractor {
+    private static Logger theLogger =
+            Logger.getLogger(RelationExtractorCooccurance.class.getName());
+
 
     @Override
     public BioCCollection Extract(BioCCollectionReader biocCollectionReader) throws XMLStreamException, IOException, InterruptedException {
@@ -21,6 +26,7 @@ public class RelationExtractorCooccurance implements RelationExtractor {
 
                 for (BioCPassage passage : doc.getPassages()) {
                     List<String> genesInPassage = getGenes(passage);
+                    DebugWriteGenesFound(doc.getID(), genesInPassage);
                     addRelationToDoc(doc, existingGeneRelationsFromPreviousPassage, genesInPassage);
                     //To avoid duplicates
                     existingGeneRelationsFromPreviousPassage.addAll(genesInPassage);
@@ -39,6 +45,16 @@ public class RelationExtractorCooccurance implements RelationExtractor {
             if (biocCollectionReader!= null) biocCollectionReader.close();
         }
 
+
+    }
+
+    private void DebugWriteGenesFound(String docId, List<String> genesInPassage) {
+        if (theLogger.isLoggable(Level.FINEST))
+
+            for (String gene : genesInPassage){
+            theLogger.finest(String.format("Gene found in docid %s , geneid %s", docId, gene));
+
+        }
 
     }
 
@@ -96,7 +112,12 @@ public class RelationExtractorCooccurance implements RelationExtractor {
             //Annotation is a gene
             if (annotation.getInfon("type").get().equals("Gene")) {
                 //Get NCBI gene name
+                //TODO: clean up, case sensitive annotation key
                 Optional<String> ncbiGeneInfo = annotation.getInfon("NCBI GENE");
+                if (!ncbiGeneInfo.isPresent()){
+                   ncbiGeneInfo= annotation.getInfon("NCBI Gene");
+                };
+
                 if (ncbiGeneInfo.isPresent()) {
                     geneSet.add(ncbiGeneInfo.get());
                 }

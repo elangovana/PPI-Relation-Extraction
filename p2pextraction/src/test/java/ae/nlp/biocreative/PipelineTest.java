@@ -42,6 +42,8 @@ public class PipelineTest {
                 , {"PMtask_Relations_TrainingSet_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml",tmpOutPath}
                 , {"PMtask_Relations_TrainingSet_NoRelations.xml", "PMtask_Relations_TrainingSet.xml",tmpOutPath}
 
+                ,{"relationtrainingdata_gnomout_clean.xml", "relationtrainingdata.xml",tmpOutPath}
+
         };
 
     }

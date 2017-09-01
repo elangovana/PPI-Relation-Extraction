@@ -42,7 +42,10 @@ public class PreprocessorSentenceExtractTest {
     @DataProvider(name = "createsSentencesTestCases")
     public static Object[][] createsSentencesTestCases() {
 
-        return new Object[][]{{"relationPred_relation.xml","relationPred_relationwithSentence.xml"}};
+
+        return new Object[][]{{"relationPred_relation.xml","relationPred_relationwithSentence.xml"}
+        ,{"PMtask_Relations_TrainingSet_NoRelations.xml","PMtask_Relations_TrainingSet_NoRelations.xml"}
+    };
     }
 
     @Test(dataProvider = "createsSentencesTestCases")

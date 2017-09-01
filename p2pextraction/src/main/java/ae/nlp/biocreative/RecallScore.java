@@ -50,12 +50,14 @@ class RecallScore implements  Scorer  {
 
             }
         }
-        if (theLogger.isLoggable(Level.FINEST))  DebugWriteMissingRelations(trainingSet, predictedSet);
+         DebugWriteMissingRelations(trainingSet, predictedSet);
         theLogger.info(String.format("The predicted total is %d, pred actual correct is %d, training actual is %d ", predActualRel, predCorrectRel, actualTotalRel));
         return  (double)predCorrectRel/(double)actualTotalRel;
     }
 
     private void DebugWriteMissingRelations(BioCCollection trainingSet, BioCCollection predictedSet) {
+        if (!theLogger.isLoggable(Level.FINEST)) return;;
+
         HashMap<String, BioCDocument> predDocIdHash = buildDocIdDocumentHash(predictedSet);
         for (BioCDocument trainDoc: trainingSet.getDocuments()) {
             BioCDocument predDoc = predDocIdHash.get(trainDoc.getID());

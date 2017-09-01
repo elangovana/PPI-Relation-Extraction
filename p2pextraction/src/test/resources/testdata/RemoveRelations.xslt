@@ -10,4 +10,5 @@
     </xsl:template>
 
     <xsl:template match="relation"/>
+    <xsl:template match="annotation"/>
 </xsl:stylesheet>
