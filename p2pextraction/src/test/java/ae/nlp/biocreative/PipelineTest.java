@@ -40,7 +40,9 @@ public class PipelineTest {
         return new Object[][]{
                 {"relationtrainingdata_gnormplus_out.xml", "relationtrainingdata.xml",tmpOutPath}
                 , {"PMtask_Relations_TrainingSet_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml",tmpOutPath}
-                , {"PMtask_Relations_TrainingSet_NoRelations.xml", "PMtask_Relations_TrainingSet.xml",tmpOutPath}
+                , {"PMtask_Relations_TrainingSet_noannotation_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml",tmpOutPath}
+
+                , {"PMtask_Relations_TrainingSet_GoldGeneAnnotations.xml", "PMtask_Relations_TrainingSet.xml",tmpOutPath}
 
                 ,{"relationtrainingdata_gnomout_clean.xml", "relationtrainingdata.xml",tmpOutPath}
 

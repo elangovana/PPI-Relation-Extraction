@@ -44,7 +44,6 @@ public class PreprocessorSentenceExtractTest {
 
 
         return new Object[][]{{"relationPred_relation.xml","relationPred_relationwithSentence.xml"}
-        ,{"PMtask_Relations_TrainingSet_NoRelations.xml","PMtask_Relations_TrainingSet_NoRelations.xml"}
     };
     }
 
@@ -55,15 +54,18 @@ public class PreprocessorSentenceExtractTest {
         File ibiocxmlFile = Paths.get(testdatadir, biocXml).toFile();
         File expectedBiocXmlFile = Paths.get(testdatadir, expectedBiocXml).toFile();
         com.pengyifan.bioc.io.BioCCollectionReader bioCCollection = new Parser().getBioCCollection(ibiocxmlFile);
-
+        String sourceexpectedDate = new Parser().getBioCCollection(expectedBiocXmlFile).readCollection().getDate();
         //Act
         BioCCollection actual = sut.Process(bioCCollection);
 
 
         //Assert
         File actualFile =File.createTempFile("biocSentence", ".xml");
+        //Set the date os that file compare works
+        actual.setDate(sourceexpectedDate);
 
         BioCCollectionWriter writer = new BioCCollectionWriter(actualFile);
+
         writer.writeCollection(actual);
         assertThat(the(XmlHelper.ParseXml(actualFile)), isEquivalentTo(the(XmlHelper.ParseXml(expectedBiocXmlFile))));
 
