@@ -55,6 +55,7 @@ public class NerFMeasureScorer {
             //Correct in test
             for (String testGene : testGeneNamesInDoc) {
                 if (trainGeneNamesInDoc.contains(testGene)) testCorrectCount++;
+                else theLogger.finest(String.format("In  docId %s gene %s in test set doest not exist in training set ",testDoc.getID(), testGene ));
 
             }
 

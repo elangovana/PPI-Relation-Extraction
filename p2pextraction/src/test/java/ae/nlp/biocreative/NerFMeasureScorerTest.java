@@ -40,7 +40,9 @@ public class NerFMeasureScorerTest {
     @DataProvider(name = "calculateScoreTestCases")
     public static Object[][] calculateScoreTestCases() {
 
-        return new Object[][]{{"PMtask_Relations_TrainingSet_noannotation_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml", .663}};
+        return new Object[][]{{"PMtask_Relations_TrainingSet_noannotation_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml", .663}
+    ,{"PMtask_Relations_TrainingSet.xml", "PMtask_Relations_TrainingSet.xml", 1.0}
+    };
     }
 
     @Test(dataProvider = "calculateScoreTestCases")
