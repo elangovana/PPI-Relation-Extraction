@@ -8,6 +8,7 @@ import com.pengyifan.bioc.BioCPassage;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -71,9 +72,47 @@ public class NerFMeasureScorer {
 
         theLogger.info(String.format("Precision %1$.3f, recall %2$.3f, fmeasure %3$.3f", precision, recall, f_measure));
 
-
+        WriteVerboseLog(biocCollectionTraining, biocCollectionTest);
         return f_measure;
 
+    }
+
+    private void WriteVerboseLog(BioCCollection biocCollectionTraining, BioCCollection biocCollectionTest) {
+        if (! theLogger.isLoggable(Level.FINEST)) return;;
+
+        HashMap<String, BioCDocument> testDocHash = buildDocIdDocumentHash(biocCollectionTest);
+        for (Iterator<BioCDocument> trainDocIterator = biocCollectionTraining.documentIterator(); trainDocIterator.hasNext(); ) {
+            BioCDocument trainDoc = trainDocIterator.next();
+
+            HashSet<String> testGeneNamesInDoc = new HashSet<>();
+            HashSet<String> trainGeneNamesInDoc = new HashSet<>();
+
+
+            //Populate test geene
+            for (BioCPassage passage : testDocHash.get(trainDoc.getID()).getPassages()) {
+                List<String> genesInPassage = getGenes(passage);
+                //To avoid duplicates
+                testGeneNamesInDoc.addAll(genesInPassage);
+
+            }
+
+
+            //Populate test geene
+            for (BioCPassage passage : trainDoc.getPassages()) {
+                List<String> genesInPassage = getGenes(passage);
+                //To avoid duplicates
+                trainGeneNamesInDoc.addAll(genesInPassage);
+
+
+            }
+
+            //Correct in test
+            for (String trainGene : trainGeneNamesInDoc) {
+                if (!testGeneNamesInDoc.contains(trainGene))
+                    theLogger.finest(String.format("In  docId %s gene %s in train set doest not exist in test set ", trainDoc.getID(), trainGene));
+
+            }
+        }
     }
 
     private ArrayList<String> getGenes(BioCPassage passage) {
