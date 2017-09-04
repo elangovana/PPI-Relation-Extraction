@@ -16,7 +16,7 @@ import com.aliasi.tokenizer.Tokenizer;
 
 
 public class RelationExtractorCooccurancePmi implements RelationExtractor {
-    private LingSentenceExtractor sentenceExtractor;
+    private PreprocessorSentenceExtract sentenceExtractor;
 
     @Override
     public BioCCollection Extract(BioCCollectionReader biocCollectionReader) throws XMLStreamException, IOException, InterruptedException {
@@ -24,8 +24,10 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
         try{
             BioCCollection outBiocCollection = new BioCCollection();
+            //Preprocess
+            BioCCollection biocCollection = getSentenceExtractor().Process(biocCollectionReader);
 
-            for (Iterator<BioCDocument> doci = biocCollectionReader.readCollection().documentIterator(); doci.hasNext(); ) {
+            for (Iterator<BioCDocument> doci = biocCollection.documentIterator(); doci.hasNext(); ) {
                 BioCDocument doc = doci.next();
 
                 HashSet<String> existingGeneRelationsFromPreviousPassage = new HashSet<>();
@@ -34,6 +36,7 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
 
                     List<String> genesInPassage = getGenes(passage);
+
                     addRelationToDoc(doc, existingGeneRelationsFromPreviousPassage, genesInPassage);
                     //To avoid duplicates
                     existingGeneRelationsFromPreviousPassage.addAll(genesInPassage);
@@ -122,13 +125,13 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
         return new ArrayList<>(geneSet);
     }
 
-    public LingSentenceExtractor getSentenceExtractor() {
-        if ( sentenceExtractor == null) sentenceExtractor = new LingSentenceExtractor();
+    public PreprocessorSentenceExtract getSentenceExtractor() {
+        if ( sentenceExtractor == null) sentenceExtractor = new PreprocessorSentenceExtract();
 
         return sentenceExtractor;
     }
 
-    public void setSentenceExtractor(LingSentenceExtractor sentenceExtractor) {
+    public void setSentenceExtractor(PreprocessorSentenceExtract sentenceExtractor) {
         this.sentenceExtractor = sentenceExtractor;
     }
 }
