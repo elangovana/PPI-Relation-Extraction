@@ -4,7 +4,6 @@ import com.pengyifan.bioc.BioCAnnotation;
 import com.pengyifan.bioc.BioCCollection;
 import com.pengyifan.bioc.BioCDocument;
 import com.pengyifan.bioc.BioCPassage;
-import com.pengyifan.bioc.io.BioCCollectionReader;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -14,10 +13,10 @@ import java.util.logging.Logger;
 /**
  * Created by aparnaelangovan on 4/09/2017.
  */
-public class NerFMeasure {
+public class NerFMeasureScorer {
 
     private static Logger theLogger =
-            Logger.getLogger(NerFMeasure.class.getName());
+            Logger.getLogger(NerFMeasureScorer.class.getName());
 
 
     public double Score(BioCCollection biocCollectionTraining, BioCCollection biocCollectionTest) throws XMLStreamException, IOException, InterruptedException {

@@ -20,13 +20,13 @@ import java.text.DecimalFormat;
 /**
  * Created by aparnaelangovan on 5/08/2017.
  */
-public class NERScoreTest {
-    private NerFMeasure _sut;
+public class NerFMeasureScorerTest {
+    private NerFMeasureScorer _sut;
     private String _testdatadir;
 
     @BeforeTest
     void setUp() {
-        _sut = new NerFMeasure();
+        _sut = new NerFMeasureScorer();
         //Testdata
         _testdatadir = ConfigHelper.getTestDataDirectory();
 
