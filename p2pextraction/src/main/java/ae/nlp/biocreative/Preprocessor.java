@@ -11,5 +11,5 @@ import java.io.IOException;
  */
 public interface Preprocessor {
 
-    BioCCollection Process(BioCCollectionReader biocCollectionReader) throws XMLStreamException, IOException, InterruptedException;
+    BioCCollection Process(BioCCollection biocCollection) throws XMLStreamException, IOException, InterruptedException;
 }

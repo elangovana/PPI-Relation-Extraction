@@ -16,7 +16,8 @@ import com.aliasi.tokenizer.Tokenizer;
 
 
 public class RelationExtractorCooccurancePmi implements RelationExtractor {
-    private PreprocessorSentenceExtract sentenceExtractor;
+    private List<Preprocessor> preProcessors;
+    private Integer threshold = 2;
 
     @Override
     public BioCCollection Extract(BioCCollectionReader biocCollectionReader) throws XMLStreamException, IOException, InterruptedException {
@@ -24,19 +25,20 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
         try {
             BioCCollection outBiocCollection = new BioCCollection();
+            BiocGeneHelper geneHelper = new BiocGeneHelper();
             //Preprocess
-            BioCCollection biocCollection = getSentenceExtractor().Process(biocCollectionReader);
+           BioCCollection biocCollection = Preprocess(biocCollectionReader.readCollection());
 
-            HashMap<UnorderedPair, Integer>  genePairCount = new HashMap<UnorderedPair,Integer>();
             for (Iterator<BioCDocument> doci = biocCollection.documentIterator(); doci.hasNext(); ) {
                 BioCDocument doc = doci.next();
+                HashMap<UnorderedPair, Integer>  genePairCount = new HashMap<UnorderedPair,Integer>();
 
                 HashSet<String> existingGeneRelationsFromPreviousPassage = new HashSet<>();
 
 
 
                 for (BioCPassage passage : doc.getPassages()) {
-                    List<String> genesInPassage = getGenes(passage);
+                    List<String> genesInPassage = geneHelper.getNormliasedGenes(passage);
 
                     for (int i = 0; i < genesInPassage.size(); i++) {
                         for (int j = i+1; j < genesInPassage.size(); j++) {
@@ -59,11 +61,29 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
                     }
 
 
-                    addRelationToDoc(doc, existingGeneRelationsFromPreviousPassage, genesInPassage);
-                    //To avoid duplicates
-                    existingGeneRelationsFromPreviousPassage.addAll(genesInPassage);
 
                 }
+                for (Map.Entry<UnorderedPair, Integer> entry: genePairCount.entrySet()  ) {
+                    if (entry.getValue() < threshold) continue; ;
+
+                        ArrayList<String> genes = entry.getKey().getItems();
+                        String gene1 = genes.get(0);
+                        String gene2 = gene1;
+
+                        if (genes.size() == 2){
+
+                             gene2 = genes.get(1);
+                        }
+                        BioCRelation relation = new BiocP2PRelation().getBioCRelation(gene1, gene2);
+
+
+                        doc.addRelation(relation);
+
+
+
+                }
+                //To avoid duplicates
+
                 outBiocCollection.addDocument(doc);
 
 
@@ -76,6 +96,22 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
         }
 
 
+    }
+
+    private BioCCollection Preprocess(BioCCollection bioCCollection) throws InterruptedException, XMLStreamException, IOException {
+
+        BioCCollection collection = bioCCollection;
+
+        for (Preprocessor preprocessor: getPreProcessors()
+             ) {
+
+           BioCCollection newCollection= preprocessor.Process(collection);
+           collection = newCollection;
+
+
+        }
+
+        return collection;
     }
 
 
@@ -108,37 +144,19 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
     }
 
 
-    /**
-     * @param passage Biocpassage
-     * @return Returns the list of genes from the annotations
-     */
-    private ArrayList<String> getGenes(BioCPassage passage) {
-        HashSet<String> geneSet = new HashSet<String>();
 
 
-        //Get genes identified
-        for (BioCAnnotation annotation : passage.getAnnotations()) {
-            //Annotation is a gene
-            if (annotation.getInfon("type").get().equals("Gene")) {
-                //Get NCBI gene name
-                Optional<String> geneName = annotation.getText();
-                if (geneName.isPresent()) {
-                    geneSet.add(geneName.get());
-                }
-            }
-        }
+    public List<Preprocessor> getPreProcessors() {
+      if (preProcessors == null) {
+          preProcessors = new ArrayList<>();
+          preProcessors.add(new PreprocessorNormaliseGeneNameReplacer());
+          preProcessors.add(new PreprocessorSentenceExtract());
 
-        return new ArrayList<>(geneSet);
+      }
+
+      return  preProcessors;
     }
 
-    public PreprocessorSentenceExtract getSentenceExtractor() {
-        if (sentenceExtractor == null) sentenceExtractor = new PreprocessorSentenceExtract();
 
-        return sentenceExtractor;
-    }
-
-    public void setSentenceExtractor(PreprocessorSentenceExtract sentenceExtractor) {
-        this.sentenceExtractor = sentenceExtractor;
-    }
 }
 

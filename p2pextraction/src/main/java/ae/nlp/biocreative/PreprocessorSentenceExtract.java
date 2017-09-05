@@ -12,13 +12,13 @@ public class PreprocessorSentenceExtract implements Preprocessor {
     private LingSentenceExtractor sentenceExtractor;
 
     @Override
-    public BioCCollection Process(BioCCollectionReader biocCollectionReader) throws XMLStreamException, IOException, InterruptedException {
+    public BioCCollection Process(BioCCollection biocCollection) throws XMLStreamException, IOException, InterruptedException {
 
 
         try{
             BioCCollection outBiocCollection = new BioCCollection();
 
-            for (Iterator<BioCDocument> doci = biocCollectionReader.readCollection().documentIterator(); doci.hasNext(); ) {
+            for (Iterator<BioCDocument> doci = biocCollection.documentIterator(); doci.hasNext(); ) {
                 BioCDocument doc = doci.next();
 
 
@@ -38,7 +38,7 @@ public class PreprocessorSentenceExtract implements Preprocessor {
             return outBiocCollection;
         }
         finally {
-            if (biocCollectionReader!= null) biocCollectionReader.close();
+
         }
 
 

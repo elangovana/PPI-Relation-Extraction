@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class Pipeline {
 
-    private RelationExtractor relationExtractor;
+    private List<RelationExtractor> relationExtractors;
 
     private List<Scorer> scorers;
 
@@ -38,23 +38,27 @@ public class Pipeline {
         File biocFileXmlWithGeneAnnotations = Paths.get(biocFileXmlWithGeneAnnotationsPath).toAbsolutePath().toFile();
 
 
-        BioCCollectionReader biocCollGeneAnnotations = new Parser().getBioCCollection(biocFileXmlWithGeneAnnotations);
-
-        BioCCollection pred= getRelationExtractor().Extract(biocCollGeneAnnotations);
 
         //Calculate Score
         HashMap<String, Double> result = new HashMap<>();
-        if (biocFileXmlTrainingDataPath != null){
-            File  biocFileXmlTrainingDatafile = Paths.get(biocFileXmlTrainingDataPath).toAbsolutePath().toFile();
-            BioCCollection trainBioCCollection = new Parser().getBioCCollection(biocFileXmlTrainingDatafile).readCollection();
-            for (Scorer scorer: getScorers()) {
 
-                result.put(scorer.GetScoringMethodName(), scorer.CalculateScore(trainBioCCollection, pred));
+        for (RelationExtractor relationextractor: getRelationExtractors()  ) {
+            BioCCollectionReader biocCollGeneAnnotations = new Parser().getBioCCollection(biocFileXmlWithGeneAnnotations);
+            BioCCollection pred= relationextractor.Extract(biocCollGeneAnnotations);
+
+             if (biocFileXmlTrainingDataPath != null){
+                File  biocFileXmlTrainingDatafile = Paths.get(biocFileXmlTrainingDataPath).toAbsolutePath().toFile();
+                BioCCollection trainBioCCollection = new Parser().getBioCCollection(biocFileXmlTrainingDatafile).readCollection();
+                for (Scorer scorer: getScorers()) {
+
+                    result.put(relationextractor.getClass().getName()+ "#" + scorer.GetScoringMethodName(), scorer.CalculateScore(trainBioCCollection, pred));
+                }
+
             }
 
+            writePredictions(pred, outputPath);
         }
 
-        writePredictions(pred, outputPath);
 
         return result;
 
@@ -71,14 +75,18 @@ public class Pipeline {
 
     }
 
-    public RelationExtractor getRelationExtractor() {
-        if ( relationExtractor == null) relationExtractor = new RelationExtractorCooccurance();
+    public List<RelationExtractor> getRelationExtractors() {
+        if ( relationExtractors == null) {
+            relationExtractors = new ArrayList<>();
+            relationExtractors.add(new RelationExtractorCooccurance());
+            relationExtractors.add(new RelationExtractorCooccurancePmi());
+        }
 
-        return relationExtractor;
+        return relationExtractors;
     }
 
-    public void setRelationExtractor(RelationExtractor relationExtractor) {
-        this.relationExtractor = relationExtractor;
+    public void setRelationExtractor(List<RelationExtractor> relationExtractors) {
+        this.relationExtractors = relationExtractors;
     }
 
     public List<Scorer> getScorers() {

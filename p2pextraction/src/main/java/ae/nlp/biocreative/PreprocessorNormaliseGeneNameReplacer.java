@@ -19,13 +19,13 @@ public class PreprocessorNormaliseGeneNameReplacer implements Preprocessor {
 
 
     @Override
-    public BioCCollection Process(BioCCollectionReader biocCollectionReader) throws XMLStreamException, IOException, InterruptedException {
+    public BioCCollection Process(BioCCollection biocCollection) throws XMLStreamException, IOException, InterruptedException {
 
 
         try {
             BioCCollection outBiocCollection = new BioCCollection();
 
-            for (Iterator<BioCDocument> doci = biocCollectionReader.readCollection().documentIterator(); doci.hasNext(); ) {
+            for (Iterator<BioCDocument> doci = biocCollection.documentIterator(); doci.hasNext(); ) {
                 BioCDocument doc = doci.next();
 
 
@@ -43,14 +43,14 @@ public class PreprocessorNormaliseGeneNameReplacer implements Preprocessor {
 
             return outBiocCollection;
         } finally {
-            if (biocCollectionReader != null) biocCollectionReader.close();
+
         }
 
 
     }
 
     private BioCPassage ReplaceGeneWithNormalisedId(BioCPassage bioCPassage) {
-        theLogger.info(String.format("Passage to replace with normalised gene %s", bioCPassage.getText().get()));
+        theLogger.finest(String.format("Passage to replace with normalised gene %s", bioCPassage.getText().get()));
         BiocGeneHelper geneHelper = new BiocGeneHelper();
         HashMap<String, String> geneNameToIdMap = geneHelper.GeneNameToGeneidMap(bioCPassage);
         for (Map.Entry<String, String> entry : geneNameToIdMap.entrySet()) {
@@ -58,7 +58,7 @@ public class PreprocessorNormaliseGeneNameReplacer implements Preprocessor {
             bioCPassage.setText(replacedPassage);
 
         }
-        theLogger.info(String.format("Passage  with normalised gene %s", bioCPassage.getText().get()));
+        theLogger.finest(String.format("Passage  with normalised gene %s", bioCPassage.getText().get()));
 
         return bioCPassage;
 

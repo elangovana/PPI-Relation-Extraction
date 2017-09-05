@@ -53,7 +53,7 @@ public class PreprocessorNormaliseGeneNameReplacerTest {
         com.pengyifan.bioc.io.BioCCollectionReader bioCCollection = new Parser().getBioCCollection(ibiocxmlFile);
         String sourceexpectedDate = new Parser().getBioCCollection(expectedBiocXmlFile).readCollection().getDate();
         //Act
-        BioCCollection actual = sut.Process(bioCCollection);
+        BioCCollection actual = sut.Process(bioCCollection.readCollection());
 
 
         //Assert

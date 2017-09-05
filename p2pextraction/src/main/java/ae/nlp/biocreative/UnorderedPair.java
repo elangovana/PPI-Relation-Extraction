@@ -1,5 +1,6 @@
 package ae.nlp.biocreative;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,6 +9,12 @@ import java.util.Set;
  */
 public class UnorderedPair{
     private final Set<String> set;
+
+    public ArrayList<String> getItems(){
+        ArrayList<String> result = new ArrayList();
+          result.addAll(set);
+          return result;
+    }
 
     public UnorderedPair(String a, String b) {
         set = new HashSet<String>();
