@@ -33,8 +33,6 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
                 BioCDocument doc = doci.next();
                 HashMap<UnorderedPair, Integer>  genePairCount = new HashMap<UnorderedPair,Integer>();
 
-                HashSet<String> existingGeneRelationsFromPreviousPassage = new HashSet<>();
-
 
 
                 for (BioCPassage passage : doc.getPassages()) {

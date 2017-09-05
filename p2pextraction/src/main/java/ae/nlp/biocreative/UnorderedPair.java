@@ -7,13 +7,13 @@ import java.util.Set;
 /**
  * Created by aparnaelangovan on 5/09/2017.
  */
-public class UnorderedPair{
+public class UnorderedPair {
     private final Set<String> set;
 
-    public ArrayList<String> getItems(){
+    public ArrayList<String> getItems() {
         ArrayList<String> result = new ArrayList();
-          result.addAll(set);
-          return result;
+        result.addAll(set);
+        return result;
     }
 
     public UnorderedPair(String a, String b) {
@@ -23,20 +23,33 @@ public class UnorderedPair{
     }
 
     public boolean equals(Object b) {
-       if (!(b instanceof  UnorderedPair)) return false;
-       UnorderedPair unorderedPairB = (UnorderedPair) b;
+        if (!(b instanceof UnorderedPair)) return false;
+        UnorderedPair unorderedPairB = (UnorderedPair) b;
 
-       if (unorderedPairB.set.size() != set.size() ) return  false;
+        if (unorderedPairB.set.size() != set.size()) return false;
 
-       for (String iteminB : unorderedPairB.set){
-          if (! set.contains(iteminB)) return  false;
+        for (String iteminB : unorderedPairB.set) {
+            if (!set.contains(iteminB)) return false;
 
-       }
+        }
 
-       return true;
+        return true;
     }
 
     public int hashCode() {
         return set.hashCode();
     }
+
+    public String toString() {
+        ArrayList<String> result = new ArrayList();
+        result.addAll(set);
+        StringBuilder sb = new StringBuilder();
+        for (String item : result
+                ) {
+            sb.append(item + ";");
+
+        }
+        return sb.toString();
+    }
+
 }
