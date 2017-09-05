@@ -4,6 +4,7 @@ import com.pengyifan.bioc.BioCAnnotation;
 import com.pengyifan.bioc.BioCPassage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -19,13 +20,10 @@ public class BiocGeneHelper {
         //Get genes identified
         for (BioCAnnotation annotation : passage.getAnnotations()) {
             //Annotation is a gene
-            if (annotation.getInfon("type").get().equals("Gene")) {
+            if (IsAnnotationTypeGene(annotation)) {
                 //Get NCBI gene name
-                //TODO: clean up, case sensitive annotation key
-                Optional<String> ncbiGeneInfo = annotation.getInfon("NCBI GENE");
-                if (!ncbiGeneInfo.isPresent()){
-                    ncbiGeneInfo= annotation.getInfon("NCBI Gene");
-                };
+                Optional<String> ncbiGeneInfo = getNCBIGene(annotation);
+
 
                 if (ncbiGeneInfo.isPresent()) {
                     geneSet.add(ncbiGeneInfo.get());
@@ -36,6 +34,16 @@ public class BiocGeneHelper {
         return new ArrayList<>(geneSet);
     }
 
+    private Optional<String> getNCBIGene(BioCAnnotation annotation) {
+        //TODO: clean up, case sensitive annotation key
+        Optional<String> ncbiGeneInfo = annotation.getInfon("NCBI GENE");
+        if (!ncbiGeneInfo.isPresent()){
+            ncbiGeneInfo= annotation.getInfon("NCBI Gene");
+        }
+        ;
+        return ncbiGeneInfo;
+    }
+
     public ArrayList<String> getGeneNames(BioCPassage passage) {
         HashSet<String> geneSet = new HashSet<String>();
 
@@ -43,7 +51,7 @@ public class BiocGeneHelper {
         //Get genes identified
         for (BioCAnnotation annotation : passage.getAnnotations()) {
             //Annotation is a gene
-            if (annotation.getInfon("type").get().equals("Gene")) {
+            if (IsAnnotationTypeGene(annotation)) {
                 //Get NCBI gene name
                 //TODO: clean up, case sensitive annotation key
                 Optional<String> geneName = annotation.getText();
@@ -55,5 +63,31 @@ public class BiocGeneHelper {
         }
 
         return new ArrayList<>(geneSet);
+    }
+
+    public HashMap<String, String> GeneNameToGeneidMap(BioCPassage passage) {
+        HashMap<String, String> hashMap = new HashMap<>();
+
+
+        //Get genes identified
+        for (BioCAnnotation annotation : passage.getAnnotations()) {
+            //Annotation is a gene
+            if (IsAnnotationTypeGene(annotation)) {
+                //Get NCBI gene name
+                //TODO: clean up, case sensitive annotation key
+                Optional<String> geneName = annotation.getText();
+                Optional<String> geneId = getNCBIGene(annotation);
+
+                if (geneName.isPresent() && geneId.isPresent()) {
+                    hashMap.put(geneName.get(), geneId.get());
+                }
+            }
+        }
+
+        return hashMap;
+    }
+
+    private boolean IsAnnotationTypeGene(BioCAnnotation annotation) {
+        return annotation.getInfon("type").get().equals("Gene");
     }
 }
