@@ -82,7 +82,7 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
 
                 }
-                //To avoid duplicates
+
 
                 outBiocCollection.addDocument(doc);
 
@@ -115,33 +115,9 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
     }
 
 
-    private void addRelationToDoc(BioCDocument doc, HashSet<String> geneRelationShipsAlreadyAdded, List<String> genesInPassage) {
-
-
-        for (int i = 0; i < genesInPassage.size(); i++) {
-
-            for (int j = i + 1; j < genesInPassage.size(); j++) {
-
-                //Ignore if the relationship already exists
-                String gene1 = genesInPassage.get(i);
-                String gene2 = genesInPassage.get(j);
-                if (CheckForDuplicateRelation(geneRelationShipsAlreadyAdded, gene1, gene2)) continue;
-
-                BioCRelation relation = new BiocP2PRelation().getBioCRelation(gene1, gene2);
-
-
-                doc.addRelation(relation);
-
-
-            }
-        }
-    }
 
 
 
-    private boolean CheckForDuplicateRelation(HashSet<String> geneList, String gene1, String gene2) {
-        return geneList.contains(gene1) && geneList.contains(gene2);
-    }
 
 
 
