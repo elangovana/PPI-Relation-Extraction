@@ -26,6 +26,7 @@ public class NerFMeasureScorer {
         int testCorrectCount = 0;
         int totalGenesInTrain = 0;
         int totalGenesInTest = 0;
+        BiocGeneHelper geneHelper = new BiocGeneHelper();
         HashMap<String, BioCDocument> trainDocHash = buildDocIdDocumentHash(biocCollectionTraining);
         for (Iterator<BioCDocument> testDocIterator = biocCollectionTest.documentIterator(); testDocIterator.hasNext(); ) {
             BioCDocument testDoc = testDocIterator.next();
@@ -36,7 +37,7 @@ public class NerFMeasureScorer {
 
             //Populate train geene
             for (BioCPassage passage : trainDocHash.get(testDoc.getID()).getPassages()) {
-                List<String> genesInPassage = getGenes(passage);
+                List<String> genesInPassage = geneHelper.getGeneNames(passage);
                 //To avoid duplicates
                 trainGeneNamesInDoc.addAll(genesInPassage);
 
@@ -45,7 +46,7 @@ public class NerFMeasureScorer {
 
             //Populate test geene
             for (BioCPassage passage : testDoc.getPassages()) {
-                List<String> genesInPassage = getGenes(passage);
+                List<String> genesInPassage =  geneHelper.getGeneNames(passage);
                 //To avoid duplicates
                 testGeneNamesInDoc.addAll(genesInPassage);
 
@@ -79,6 +80,7 @@ public class NerFMeasureScorer {
 
     private void WriteVerboseLog(BioCCollection biocCollectionTraining, BioCCollection biocCollectionTest) {
         if (! theLogger.isLoggable(Level.FINEST)) return;;
+        BiocGeneHelper geneHelper = new BiocGeneHelper();
 
         HashMap<String, BioCDocument> testDocHash = buildDocIdDocumentHash(biocCollectionTest);
         for (Iterator<BioCDocument> trainDocIterator = biocCollectionTraining.documentIterator(); trainDocIterator.hasNext(); ) {
@@ -90,7 +92,7 @@ public class NerFMeasureScorer {
 
             //Populate test geene
             for (BioCPassage passage : testDocHash.get(trainDoc.getID()).getPassages()) {
-                List<String> genesInPassage = getGenes(passage);
+                List<String> genesInPassage = geneHelper.getGeneNames(passage);
                 //To avoid duplicates
                 testGeneNamesInDoc.addAll(genesInPassage);
 
@@ -99,7 +101,7 @@ public class NerFMeasureScorer {
 
             //Populate test geene
             for (BioCPassage passage : trainDoc.getPassages()) {
-                List<String> genesInPassage = getGenes(passage);
+                List<String> genesInPassage =  geneHelper.getGeneNames(passage);
                 //To avoid duplicates
                 trainGeneNamesInDoc.addAll(genesInPassage);
 
@@ -115,26 +117,7 @@ public class NerFMeasureScorer {
         }
     }
 
-    private ArrayList<String> getGenes(BioCPassage passage) {
-        HashSet<String> geneSet = new HashSet<String>();
 
-
-        //Get genes identified
-        for (BioCAnnotation annotation : passage.getAnnotations()) {
-            //Annotation is a gene
-            if (annotation.getInfon("type").get().equals("Gene")) {
-                //Get NCBI gene name
-                //TODO: clean up, case sensitive annotation key
-                Optional<String> geneName = annotation.getText();
-
-                if (geneName.isPresent()) {
-                    geneSet.add(geneName.get());
-                }
-            }
-        }
-
-        return new ArrayList<>(geneSet);
-    }
 
     private HashMap<String, BioCDocument> buildDocIdDocumentHash(BioCCollection trainingSet) {
         HashMap<String, BioCDocument> docHashMap = new HashMap<>();

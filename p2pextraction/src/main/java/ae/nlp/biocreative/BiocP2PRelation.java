@@ -2,6 +2,8 @@ package ae.nlp.biocreative;
 
 import com.pengyifan.bioc.BioCRelation;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -9,12 +11,16 @@ import java.util.Optional;
  */
 public class BiocP2PRelation {
 
-    private final BioCRelation bioRelation;
+    private  BioCRelation bioRelation;
 
     public static final String RelationTypePPIM  = "PPIm";
 
     public BiocP2PRelation(BioCRelation bioCRelation){
         this.bioRelation = bioCRelation;
+    }
+
+    public BiocP2PRelation(){
+
     }
 
     public String getGene1(){
@@ -30,5 +36,19 @@ public class BiocP2PRelation {
         if (predPpiRel.isPresent() ) return  predPpiRel.get();
 
         return "";
+    }
+
+    public BioCRelation getBioCRelation(String gene1, String gene2) {
+        BioCRelation relation = new BioCRelation();
+
+
+        Map<String, String> infon = new HashMap<>();
+        infon.put("Gene1", gene1);
+        infon.put("Gene2", gene2);
+        infon.put("relation", "PPIm");
+        relation.setInfons(infon);
+
+        relation.setID(gene1 + "#" + gene2);
+        return relation;
     }
 }

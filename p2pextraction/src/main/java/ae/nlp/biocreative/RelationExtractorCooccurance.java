@@ -25,7 +25,7 @@ public class RelationExtractorCooccurance implements RelationExtractor {
                 HashSet<String> existingGeneRelationsFromPreviousPassage = new HashSet<>();
 
                 for (BioCPassage passage : doc.getPassages()) {
-                    List<String> genesInPassage = getGenes(passage);
+                    List<String> genesInPassage = new BiocGeneHelper().getNormliasedGenes (passage);
                     DebugWriteGenesFound(doc.getID(), genesInPassage);
                     addRelationToDoc(doc, existingGeneRelationsFromPreviousPassage, genesInPassage);
                     //To avoid duplicates
@@ -70,7 +70,7 @@ public class RelationExtractorCooccurance implements RelationExtractor {
                 String gene2 = genesInPassage.get(j);
                 if (CheckForDuplicateRelation(geneRelationShipsAlreadyAdded, gene1, gene2)) continue;
 
-                BioCRelation relation = getBioCRelation(gene1, gene2);
+                BioCRelation relation = new BiocP2PRelation().getBioCRelation(gene1, gene2);
 
 
                 doc.addRelation(relation);
@@ -80,19 +80,7 @@ public class RelationExtractorCooccurance implements RelationExtractor {
         }
     }
 
-    private BioCRelation getBioCRelation(String gene1, String gene2) {
-        BioCRelation relation = new BioCRelation();
 
-
-        Map<String, String> infon = new HashMap<>();
-        infon.put("Gene1", gene1);
-        infon.put("Gene2", gene2);
-        infon.put("relation", "PPIm");
-        relation.setInfons(infon);
-
-        relation.setID(gene1 + "#" + gene2);
-        return relation;
-    }
 
     private boolean CheckForDuplicateRelation(HashSet<String> geneList, String gene1, String gene2) {
         return geneList.contains(gene1) && geneList.contains(gene2);
@@ -103,29 +91,7 @@ public class RelationExtractorCooccurance implements RelationExtractor {
      * @param passage Biocpassage
      * @return Returns the list of genes from the annotations
      */
-    private ArrayList<String> getGenes(BioCPassage passage) {
-        HashSet<String> geneSet = new HashSet<String>();
 
-
-        //Get genes identified
-        for (BioCAnnotation annotation : passage.getAnnotations()) {
-            //Annotation is a gene
-            if (annotation.getInfon("type").get().equals("Gene")) {
-                //Get NCBI gene name
-                //TODO: clean up, case sensitive annotation key
-                Optional<String> ncbiGeneInfo = annotation.getInfon("NCBI GENE");
-                if (!ncbiGeneInfo.isPresent()){
-                   ncbiGeneInfo= annotation.getInfon("NCBI Gene");
-                };
-
-                if (ncbiGeneInfo.isPresent()) {
-                    geneSet.add(ncbiGeneInfo.get());
-                }
-            }
-        }
-
-        return new ArrayList<>(geneSet);
-    }
 
 }
 

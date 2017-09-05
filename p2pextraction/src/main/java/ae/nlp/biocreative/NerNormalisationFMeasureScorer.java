@@ -35,7 +35,7 @@ public class NerNormalisationFMeasureScorer {
 
             //Populate train geene
             for (BioCPassage passage : trainDocHash.get(testDoc.getID()).getPassages()) {
-                List<String> genesInPassage = getGenes(passage);
+                List<String> genesInPassage =new BiocGeneHelper().getNormliasedGenes(passage);
                 //To avoid duplicates
                 trainGeneNamesInDoc.addAll(genesInPassage);
 
@@ -44,7 +44,7 @@ public class NerNormalisationFMeasureScorer {
 
             //Populate test geene
             for (BioCPassage passage : testDoc.getPassages()) {
-                List<String> genesInPassage = getGenes(passage);
+                List<String> genesInPassage = new BiocGeneHelper().getNormliasedGenes(passage);
                 //To avoid duplicates
                 testGeneNamesInDoc.addAll(genesInPassage);
 
@@ -75,29 +75,7 @@ public class NerNormalisationFMeasureScorer {
 
     }
 
-    private ArrayList<String> getGenes(BioCPassage passage) {
-        HashSet<String> geneSet = new HashSet<String>();
 
-
-        //Get genes identified
-        for (BioCAnnotation annotation : passage.getAnnotations()) {
-            //Annotation is a gene
-            if (annotation.getInfon("type").get().equals("Gene")) {
-                //Get NCBI gene name
-                //TODO: clean up, case sensitive annotation key
-                Optional<String> ncbiGeneInfo = annotation.getInfon("NCBI GENE");
-                if (!ncbiGeneInfo.isPresent()){
-                    ncbiGeneInfo= annotation.getInfon("NCBI Gene");
-                };
-
-                if (ncbiGeneInfo.isPresent()) {
-                    geneSet.add(ncbiGeneInfo.get());
-                }
-            }
-        }
-
-        return new ArrayList<>(geneSet);
-    }
 
     private HashMap<String, BioCDocument> buildDocIdDocumentHash(BioCCollection trainingSet) {
         HashMap<String, BioCDocument> docHashMap = new HashMap<>();

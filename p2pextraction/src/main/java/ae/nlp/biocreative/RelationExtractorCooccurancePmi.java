@@ -22,20 +22,42 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
     public BioCCollection Extract(BioCCollectionReader biocCollectionReader) throws XMLStreamException, IOException, InterruptedException {
 
 
-        try{
+        try {
             BioCCollection outBiocCollection = new BioCCollection();
             //Preprocess
             BioCCollection biocCollection = getSentenceExtractor().Process(biocCollectionReader);
 
+            HashMap<UnorderedPair, Integer>  genePairCount = new HashMap<UnorderedPair,Integer>();
             for (Iterator<BioCDocument> doci = biocCollection.documentIterator(); doci.hasNext(); ) {
                 BioCDocument doc = doci.next();
 
                 HashSet<String> existingGeneRelationsFromPreviousPassage = new HashSet<>();
 
+
+
                 for (BioCPassage passage : doc.getPassages()) {
-
-
                     List<String> genesInPassage = getGenes(passage);
+
+                    for (int i = 0; i < genesInPassage.size(); i++) {
+                        for (int j = i+1; j < genesInPassage.size(); j++) {
+                            String gene1 = genesInPassage.get(i);
+                            String gene2 = genesInPassage.get(j);
+                            UnorderedPair key = new UnorderedPair(gene1, gene2);
+
+                            genePairCount.putIfAbsent(key,0);
+                            for (BioCSentence biocSentence : passage.getSentences() ) {
+                                String senence = biocSentence.getText().get();
+                                if (senence.contains(gene1) && senence.contains(genesInPassage.get(j))){
+                                    genePairCount.replace(key, genePairCount.get(key)+1);
+
+                                };
+
+                            }
+                        }
+
+
+                    }
+
 
                     addRelationToDoc(doc, existingGeneRelationsFromPreviousPassage, genesInPassage);
                     //To avoid duplicates
@@ -48,17 +70,13 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
             }
 
 
-
             return outBiocCollection;
-        }
-        finally {
-            if (biocCollectionReader!= null) biocCollectionReader.close();
+        } finally {
+            if (biocCollectionReader != null) biocCollectionReader.close();
         }
 
 
     }
-
-
 
 
     private void addRelationToDoc(BioCDocument doc, HashSet<String> geneRelationShipsAlreadyAdded, List<String> genesInPassage) {
@@ -68,12 +86,12 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
             for (int j = i + 1; j < genesInPassage.size(); j++) {
 
-                 //Ignore if the relationship already exists
+                //Ignore if the relationship already exists
                 String gene1 = genesInPassage.get(i);
                 String gene2 = genesInPassage.get(j);
                 if (CheckForDuplicateRelation(geneRelationShipsAlreadyAdded, gene1, gene2)) continue;
 
-                BioCRelation relation = getBioCRelation(gene1, gene2);
+                BioCRelation relation = new BiocP2PRelation().getBioCRelation(gene1, gene2);
 
 
                 doc.addRelation(relation);
@@ -83,19 +101,7 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
         }
     }
 
-    private BioCRelation getBioCRelation(String gene1, String gene2) {
-        BioCRelation relation = new BioCRelation();
 
-
-        Map<String, String> infon = new HashMap<>();
-        infon.put("Gene1", gene1);
-        infon.put("Gene2", gene2);
-        infon.put("relation", "PPIm");
-        relation.setInfons(infon);
-
-        relation.setID(gene1 + "#" + gene2);
-        return relation;
-    }
 
     private boolean CheckForDuplicateRelation(HashSet<String> geneList, String gene1, String gene2) {
         return geneList.contains(gene1) && geneList.contains(gene2);
@@ -115,9 +121,9 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
             //Annotation is a gene
             if (annotation.getInfon("type").get().equals("Gene")) {
                 //Get NCBI gene name
-                Optional<String> ncbiGeneInfo = annotation.getInfon("NCBI GENE");
-                if (ncbiGeneInfo.isPresent()) {
-                    geneSet.add(ncbiGeneInfo.get());
+                Optional<String> geneName = annotation.getText();
+                if (geneName.isPresent()) {
+                    geneSet.add(geneName.get());
                 }
             }
         }
@@ -126,7 +132,7 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
     }
 
     public PreprocessorSentenceExtract getSentenceExtractor() {
-        if ( sentenceExtractor == null) sentenceExtractor = new PreprocessorSentenceExtract();
+        if (sentenceExtractor == null) sentenceExtractor = new PreprocessorSentenceExtract();
 
         return sentenceExtractor;
     }
