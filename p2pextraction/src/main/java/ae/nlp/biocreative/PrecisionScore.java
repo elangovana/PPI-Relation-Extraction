@@ -36,6 +36,8 @@ public class PrecisionScore implements Scorer {
 
                if (RelationExistsInDoc(trainingDoc, Gene1, Gene2)){
                    predCorrectRel++;
+                   theLogger.finest(String.format("The document id %s does not contain any relationship between %s & %s in the  set", predDoc.getID(), Gene1, Gene2));
+
                }
                predTotalRel++;
 

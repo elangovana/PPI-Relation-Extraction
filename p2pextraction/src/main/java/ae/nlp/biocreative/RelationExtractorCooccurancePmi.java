@@ -45,6 +45,7 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
                             UnorderedPair key = new UnorderedPair(gene1, gene2);
 
                             genePairCount.putIfAbsent(key,0);
+                            //For each sentence check if contains gene pairs
                             for (BioCSentence biocSentence : passage.getSentences() ) {
                                 String senence = biocSentence.getText().get();
                                 if (senence.contains(gene1) && senence.contains(genesInPassage.get(j))){
