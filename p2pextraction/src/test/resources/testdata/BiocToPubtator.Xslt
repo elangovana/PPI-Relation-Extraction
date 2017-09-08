@@ -1,4 +1,4 @@
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:output omit-xml-declaration="yes"/>
@@ -24,7 +24,7 @@
             <xsl:for-each select="passage">
                 <xsl:for-each select="annotation">
                     <xsl:value-of
-                            select="concat($docID, $tab,  location/@offset, $tab, location/@offset +location/@length, $tab,  text/text(), $tab, infon[@key='type']/text(), $tab,infon[@key='NCBI GENE']/text(),$newline )"></xsl:value-of>
+                            select="concat($docID, $tab,  location/@offset, $tab, location/@offset +location/@length, $tab,  text/text(), $tab, infon[@key='type']/text(), $tab,infon[upper-case( @key)='NCBI GENE']/text(),$newline )"></xsl:value-of>
                 </xsl:for-each>
             </xsl:for-each>
 
