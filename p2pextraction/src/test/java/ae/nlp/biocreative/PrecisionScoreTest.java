@@ -43,7 +43,9 @@ public class PrecisionScoreTest {
         return new Object[][]{{"relationPred_relation.xml", "relationtrainingdata.xml", .889}
                 , {"ScoreTestcaseRecall1_Pred.xml", "ScoreTestcaseRecall1_Train.xml", .333}
                ,{"ScoreTestcasePrecision0_Pred.xml", "ScoreTestcasePrecision0_Train.xml", 0.0}
-         ,{"ScoreTestcasePrecision1_Pred.xml", "ScoreTestcasePrecision1_Train.xml", 1.0}};
+         ,{"ScoreTestcasePrecision1_Pred.xml", "ScoreTestcasePrecision1_Train.xml", 1.0}
+                ,{"ScoreTestcasePrecision1_Pred.xml", "ScoreTestcasePrecision1_Train.xml", 1.0},
+                {"PMTask_Relations_Gold_Annotaions_Prediction.xml", "PMtask_Relations_TrainingSet.xml", .778}};
     }
 
     @Test(dataProvider = "calculateScoreTestCases")

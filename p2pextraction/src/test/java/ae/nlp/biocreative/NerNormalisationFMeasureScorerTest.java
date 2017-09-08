@@ -40,7 +40,9 @@ public class NerNormalisationFMeasureScorerTest {
     @DataProvider(name = "calculateScoreTestCases")
     public static Object[][] calculateScoreTestCases() {
 
-        return new Object[][]{{"PMtask_Relations_TrainingSet_noannotation_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml", .461}};
+        return new Object[][]{
+                {"PMtask_Relations_TrainingSet_noannotation_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml", .461}
+        ,{"PMtask_Relations_TrainingSet.xml", "PMtask_Relations_TrainingSet.xml", .461}};
     }
 
     @Test(dataProvider = "calculateScoreTestCases")

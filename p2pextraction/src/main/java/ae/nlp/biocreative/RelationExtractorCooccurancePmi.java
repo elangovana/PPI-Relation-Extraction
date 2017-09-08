@@ -62,22 +62,16 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
                 }
                 for (Map.Entry<UnorderedPair, Integer> entry: genePairCount.entrySet()  ) {
-                    if (entry.getValue() < threshold) continue; ;
+                    //TODO: MOVE genePairCount.size() == 1 outside loop..
 
-                        ArrayList<String> genes = entry.getKey().getItems();
-                        String gene1 = genes.get(0);
-                        String gene2 = gene1;
+                    if ((genePairCount.size() == 1) || (entry.getValue() >= threshold)) {
 
-                        if (genes.size() == 2){
-
-                             gene2 = genes.get(1);
-                        }
-                        BioCRelation relation = new BiocP2PRelation().getBioCRelation(gene1, gene2);
+                        BioCRelation relation = getBioCRelation(entry);
 
 
                         doc.addRelation(relation);
 
-
+                    }
 
                 }
 
@@ -94,6 +88,18 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
         }
 
 
+    }
+
+    private BioCRelation getBioCRelation(Map.Entry<UnorderedPair, Integer> entry) {
+        ArrayList<String> genes = entry.getKey().getItems();
+        String gene1 = genes.get(0);
+        String gene2 = gene1;
+
+        if (genes.size() == 2){
+
+             gene2 = genes.get(1);
+        }
+        return new BiocP2PRelation().getBioCRelation(gene1, gene2);
     }
 
     private BioCCollection Preprocess(BioCCollection bioCCollection) throws InterruptedException, XMLStreamException, IOException {
