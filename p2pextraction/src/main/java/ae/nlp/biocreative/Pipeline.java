@@ -55,6 +55,7 @@ public class Pipeline {
                 }
 
             }
+            theLogger.info(String.format("Writing predictions for method %s", relationextractor.getClass().getName()));
 
             writePredictions(pred, outputPath);
         }

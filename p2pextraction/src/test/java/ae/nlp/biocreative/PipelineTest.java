@@ -38,13 +38,14 @@ public class PipelineTest {
     public static Object[][] runRelationExtractionTestCases() throws IOException {
         String tmpOutPath = Files.createTempDirectory("pipelineOut").toString();
         return new Object[][]{
-                {"relationtrainingdata_gnormplus_out.xml", "relationtrainingdata.xml",tmpOutPath}
-                , {"PMtask_Relations_TrainingSet_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml",tmpOutPath}
-                , {"PMtask_Relations_TrainingSet_noannotation_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml",tmpOutPath}
+                {"relationtrainingdata_gnormplus_out.xml", "relationtrainingdata.xml", tmpOutPath}
+                , {"PMtask_Relations_TrainingSet_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml", tmpOutPath}
+                , {"PMtask_Relations_TrainingSet_noannotation_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml", tmpOutPath}
 
-                , {"PMtask_Relations_TrainingSet_GoldGeneAnnotations.xml", "PMtask_Relations_TrainingSet.xml",tmpOutPath}
+                , {"PMtask_Relations_TrainingSet_GoldGeneAnnotations.xml", "PMtask_Relations_TrainingSet.xml", tmpOutPath}
 
-                ,{"relationtrainingdata_gnomout_clean.xml", "relationtrainingdata.xml",tmpOutPath}
+                , {"relationtrainingdata_gnomout_clean.xml", "relationtrainingdata.xml", tmpOutPath}
+
 
         };
 
@@ -65,6 +66,26 @@ public class PipelineTest {
             System.out.printf("%s %f\n", scoringMethod, actual.get(scoringMethod));
 
         }
+    }
+
+    @DataProvider(name = "runRelationExtractionTestOnlyTestCases")
+    public static Object[][] runRelationExtractionTestOnlyTestCases() throws IOException {
+        return new Object[][]{
+                {"PMtask_TestSet_GNormplus_out.xml"}
+        };
+    }
+
+    @Test(dataProvider = "runRelationExtractionTestOnlyTestCases")
+    void runRelationExtractionTestOnly(String geneAnnotatedBioCXml) throws SAXException, XMLStreamException, ParserConfigurationException, IOException, InterruptedException {
+        //Arrange
+        String tmpOutPath = Files.createTempDirectory("pipelineOut").toString();
+
+        File geneAnnotationsPredFilePath = Paths.get(_testdatadir, geneAnnotatedBioCXml).toFile();
+
+        //Act
+        HashMap<String, Double> actual = _sut.runRelationExtraction(geneAnnotationsPredFilePath.getAbsolutePath(), null, tmpOutPath);
+
+
     }
 
 }
