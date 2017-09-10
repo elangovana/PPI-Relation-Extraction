@@ -45,7 +45,7 @@ public class PrecisionScoreTest {
                ,{"ScoreTestcasePrecision0_Pred.xml", "ScoreTestcasePrecision0_Train.xml", 0.0}
          ,{"ScoreTestcasePrecision1_Pred.xml", "ScoreTestcasePrecision1_Train.xml", 1.0}
                 ,{"ScoreTestcasePrecision1_Pred.xml", "ScoreTestcasePrecision1_Train.xml", 1.0},
-                {"PMTask_Relations_Gold_Annotaions_Prediction.xml", "PMtask_Relations_TrainingSet.xml", .778}};
+                {"PMTask_Relations_Gold_Annotaions_Prediction.xml", "PMtask_Relations_TrainingSet.xml", .776}};
     }
 
     @Test(dataProvider = "calculateScoreTestCases")

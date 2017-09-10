@@ -39,6 +39,13 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
                     List<String> genesInPassage = geneHelper.getNormliasedGenes(passage);
 
                     for (int i = 0; i < genesInPassage.size(); i++) {
+
+                        if (genesInPassage.size() == 1){
+                            UnorderedPair key = new UnorderedPair(genesInPassage.get(0), genesInPassage.get(0));
+
+                            genePairCount.putIfAbsent(key,0);
+                            continue;
+                        }
                         for (int j = i+1; j < genesInPassage.size(); j++) {
                             String gene1 = genesInPassage.get(i);
                             String gene2 = genesInPassage.get(j);
@@ -55,6 +62,7 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
                             }
                         }
+
 
 
                     }
