@@ -53,7 +53,7 @@ public class PrecisionScore implements Scorer {
 
     private void WriteLogInvalidRelation(BioCDocument doc, String gene1, String gene2) {
         //Logger
-        Level logLevel = Level.INFO;
+        Level logLevel = Level.FINEST;
         if (!theLogger.isLoggable(logLevel)) {
             return;
         }
@@ -61,7 +61,7 @@ public class PrecisionScore implements Scorer {
         HashSet<String> normalisedGenesInDoc = new HashSet<>();
         for (BioCPassage passage: doc.getPassages() ) {
            normalisedGenesInDoc.addAll( geneHelper.getNormliasedGenes(passage));
-           
+
         }
         if (! normalisedGenesInDoc.contains(gene1)){
             theLogger.log(logLevel,String.format("The document id %s does not contain the gene %s to form a relationships", doc.getID(), gene1));
