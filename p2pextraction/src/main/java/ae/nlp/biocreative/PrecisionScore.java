@@ -2,11 +2,13 @@ package ae.nlp.biocreative;
 
 import com.pengyifan.bioc.BioCCollection;
 import com.pengyifan.bioc.BioCDocument;
+import com.pengyifan.bioc.BioCPassage;
 import com.pengyifan.bioc.BioCRelation;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -36,7 +38,9 @@ public class PrecisionScore implements Scorer {
 
                if (RelationExistsInDoc(trainingDoc, Gene1, Gene2)){
                    predCorrectRel++;
-                   theLogger.finest(String.format("The document id %s does not contain any relationship between %s & %s in the  set", predDoc.getID(), Gene1, Gene2));
+               }else{
+                   WriteLogInvalidRelation(trainingDoc, Gene1, Gene2);
+
 
                }
                predTotalRel++;
@@ -45,6 +49,31 @@ public class PrecisionScore implements Scorer {
             }
         }
         return  (double)predCorrectRel/(double)predTotalRel;
+    }
+
+    private void WriteLogInvalidRelation(BioCDocument doc, String gene1, String gene2) {
+        //Logger
+        Level logLevel = Level.INFO;
+        if (!theLogger.isLoggable(logLevel)) {
+            return;
+        }
+        BiocGeneHelper geneHelper = new BiocGeneHelper();
+        HashSet<String> normalisedGenesInDoc = new HashSet<>();
+        for (BioCPassage passage: doc.getPassages() ) {
+           normalisedGenesInDoc.addAll( geneHelper.getNormliasedGenes(passage));
+           
+        }
+        if (! normalisedGenesInDoc.contains(gene1)){
+            theLogger.log(logLevel,String.format("The document id %s does not contain the gene %s to form a relationships", doc.getID(), gene1));
+
+        }
+        if (! normalisedGenesInDoc.contains(gene2)){
+            theLogger.log(logLevel,String.format("The document id %s does not contain the gene %s to form a relationships", doc.getID(), gene2));
+
+        }else{
+            theLogger.log(logLevel,String.format("The document id %s does not contain any relationship between %s & %s in the  set", doc.getID(), gene1, gene2));
+
+        }
     }
 
     @Override
