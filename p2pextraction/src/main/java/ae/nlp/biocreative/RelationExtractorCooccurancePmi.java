@@ -1,8 +1,5 @@
 package ae.nlp.biocreative;
 
-import com.aliasi.sentences.MedlineSentenceModel;
-import com.aliasi.sentences.SentenceModel;
-import com.aliasi.tokenizer.Tokenizer;
 import com.pengyifan.bioc.*;
 import com.pengyifan.bioc.io.BioCCollectionReader;
 
@@ -10,14 +7,10 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.util.*;
 
-import com.aliasi.tokenizer.IndoEuropeanTokenizerFactory;
-import com.aliasi.tokenizer.TokenizerFactory;
-import com.aliasi.tokenizer.Tokenizer;
-
 
 public class RelationExtractorCooccurancePmi implements RelationExtractor {
     private List<Preprocessor> preProcessors;
-    private Integer threshold = 2;
+    private Integer thresholdPairCount = 2;
 
     @Override
     public BioCCollection Extract(BioCCollectionReader biocCollectionReader) throws XMLStreamException, IOException, InterruptedException {
@@ -25,69 +18,60 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
         try {
             BioCCollection outBiocCollection = new BioCCollection();
-            BiocGeneHelper geneHelper = new BiocGeneHelper();
             //Preprocess
-           BioCCollection biocCollection = Preprocess(biocCollectionReader.readCollection());
+            BioCCollection biocCollection = Preprocess(biocCollectionReader.readCollection());
 
             for (Iterator<BioCDocument> doci = biocCollection.documentIterator(); doci.hasNext(); ) {
                 BioCDocument doc = doci.next();
-                HashMap<UnorderedPair, Integer>  genePairCount = new HashMap<UnorderedPair,Integer>();
+                HashMap<UnorderedPair, ArrayList<String>> outgenePairSentences = new HashMap<>();
+                HashMap<String, ArrayList<UnorderedPair>> outsentenceToGeneMap = new HashMap<>();
+
+                PopulateGenePairSentences(doc, outgenePairSentences, outsentenceToGeneMap);
+
+//                if (outgenePairSentences.size() == 1){
+//                    BioCRelation relation = getBioCRelation(outgenePairSentences.get(outgenePairSentences).);
+//                    doc.addRelation(relation);
+//                    continue;;
+//                }
+
+                for (Map.Entry<UnorderedPair, ArrayList<String>> entry : outgenePairSentences.entrySet()) {
+
+                    BioCRelation relation = null;
 
 
+                    int numOfSentencesWithGenePairs = entry.getValue().size();
+                    boolean isSelfRelation = entry.getKey().getItems().size() == 1;
+                    if ((numOfSentencesWithGenePairs >= thresholdPairCount && !isSelfRelation)) relation = getBioCRelation(entry.getKey());
+                    //Not enough threshold.. lets try rules to see the relation can be added.
 
-                for (BioCPassage passage : doc.getPassages()) {
-                    List<String> genesInPassage = geneHelper.getNormliasedGenes(passage);
+                    else {
+                        for (Map.Entry<String, ArrayList<UnorderedPair>> sentenceGeneMapEntry : outsentenceToGeneMap.entrySet()) {
+                            int numOfgenesPairsInSentence = sentenceGeneMapEntry.getValue().size();
+                            if (numOfgenesPairsInSentence > 0 && !sentenceGeneMapEntry.getValue().get(0).equals(entry.getKey())) continue;
+                            //Rule 1 - Sentence  contains only one pair and contains the word interact then add it..
 
-                    for (int i = 0; i < genesInPassage.size(); i++) {
+                            if (numOfgenesPairsInSentence == 1  ) {
+                                String sentence = sentenceGeneMapEntry.getKey();
+                                if  (!isSelfRelation && sentence.contains("interact")){
+                                    relation = getBioCRelation(entry.getKey());
 
-                        if (genesInPassage.size() == 1){
-                            UnorderedPair key = new UnorderedPair(genesInPassage.get(0), genesInPassage.get(0));
+                                }
 
-                            genePairCount.putIfAbsent(key,0);
-                            continue;
-                        }
-                        for (int j = i+1; j < genesInPassage.size(); j++) {
-                            String gene1 = genesInPassage.get(i);
-                            String gene2 = genesInPassage.get(j);
-                            UnorderedPair key = new UnorderedPair(gene1, gene2);
-
-                            genePairCount.putIfAbsent(key,0);
-                            //For each sentence check if contains gene pairs
-                            for (BioCSentence biocSentence : passage.getSentences() ) {
-                                String senence = biocSentence.getText().get();
-                                if (senence.contains(gene1) && senence.contains(genesInPassage.get(j))){
-                                    genePairCount.replace(key, genePairCount.get(key)+1);
-
-                                };
+//                                if (isSelfRelation && sentence.contains("muta")) {
+//                                    //relation = getBioCRelation(entry.getKey());
+//                                }
 
                             }
+
                         }
 
-
-
                     }
-
-
-
-                }
-                for (Map.Entry<UnorderedPair, Integer> entry: genePairCount.entrySet()  ) {
-                    //TODO: MOVE genePairCount.size() == 1 outside loop..
-
-                    if ((genePairCount.size() == 1) || (entry.getValue() >= threshold)) {
-
-                        BioCRelation relation = getBioCRelation(entry);
-
-
+                    if (relation != null) {
                         doc.addRelation(relation);
-
                     }
 
                 }
-
-
                 outBiocCollection.addDocument(doc);
-
-
             }
 
 
@@ -99,14 +83,54 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
     }
 
-    private BioCRelation getBioCRelation(Map.Entry<UnorderedPair, Integer> entry) {
-        ArrayList<String> genes = entry.getKey().getItems();
+    private void PopulateGenePairSentences(BioCDocument doc, HashMap<UnorderedPair, ArrayList<String>> outGenePairSentences, HashMap<String, ArrayList<UnorderedPair>> outSentenceToGeneMap) {
+        BiocGeneHelper geneHelper = new BiocGeneHelper();
+
+        for (BioCPassage passage : doc.getPassages()) {
+            //   if (passage.getInfon("type").get().equals("title")) continue;
+            List<String> genesInPassage = geneHelper.getNormliasedGenes(passage);
+
+            for (int i = 0; i < genesInPassage.size(); i++) {
+
+
+                for (int j = i ; j < genesInPassage.size(); j++) {
+                    String gene1 = genesInPassage.get(i);
+                    String gene2 = genesInPassage.get(j);
+                    UnorderedPair key = new UnorderedPair(gene1, gene2);
+
+                    outGenePairSentences.putIfAbsent(key, new ArrayList<>());
+
+                    //For each sentence check if contains gene pairs
+                    for (BioCSentence biocSentence : passage.getSentences()) {
+                        String senence = biocSentence.getText().get();
+                        outSentenceToGeneMap.putIfAbsent(senence, new ArrayList<>());
+
+                        if (senence.contains(gene1) && senence.contains(genesInPassage.get(j))) {
+
+                            outGenePairSentences.get(key).add(senence);
+                            outSentenceToGeneMap.get(senence).add(key);
+
+                        }
+                        ;
+
+                    }
+                }
+
+
+            }
+
+
+        }
+    }
+
+    private BioCRelation getBioCRelation(UnorderedPair entry) {
+        ArrayList<String> genes = entry.getItems();
         String gene1 = genes.get(0);
         String gene2 = gene1;
 
-        if (genes.size() == 2){
+        if (genes.size() == 2) {
 
-             gene2 = genes.get(1);
+            gene2 = genes.get(1);
         }
         return new BiocP2PRelation().getBioCRelation(gene1, gene2);
     }
@@ -115,11 +139,11 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
         BioCCollection collection = bioCCollection;
 
-        for (Preprocessor preprocessor: getPreProcessors()
-             ) {
+        for (Preprocessor preprocessor : getPreProcessors()
+                ) {
 
-           BioCCollection newCollection= preprocessor.Process(collection);
-           collection = newCollection;
+            BioCCollection newCollection = preprocessor.Process(collection);
+            collection = newCollection;
 
 
         }
@@ -128,22 +152,15 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
     }
 
 
-
-
-
-
-
-
-
     public List<Preprocessor> getPreProcessors() {
-      if (preProcessors == null) {
-          preProcessors = new ArrayList<>();
-          preProcessors.add(new PreprocessorNormaliseGeneNameReplacer());
-          preProcessors.add(new PreprocessorSentenceExtract());
+        if (preProcessors == null) {
+            preProcessors = new ArrayList<>();
+            preProcessors.add(new PreprocessorNormaliseGeneNameReplacer());
+            preProcessors.add(new PreprocessorSentenceExtract());
 
-      }
+        }
 
-      return  preProcessors;
+        return preProcessors;
     }
 
 

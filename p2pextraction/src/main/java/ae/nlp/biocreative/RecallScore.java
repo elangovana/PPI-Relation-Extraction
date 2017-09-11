@@ -2,6 +2,7 @@ package ae.nlp.biocreative;
 
 import com.pengyifan.bioc.BioCCollection;
 import com.pengyifan.bioc.BioCDocument;
+import com.pengyifan.bioc.BioCPassage;
 import com.pengyifan.bioc.BioCRelation;
 
 import java.util.HashMap;
@@ -39,11 +40,6 @@ class RecallScore implements  Scorer  {
 
                if (RelationExistsInDoc(trainingDoc, Gene1, Gene2)){
                    predCorrectRel++;
-                   theLogger.finest(String.format("The document id %s contains the relationship between %s & %s in the  training set", trainingDoc.getID(), Gene1, Gene2));
-
-               }else{
-                   theLogger.finest(String.format("The document id %s does not contain any relationship between %s & %s in the  training set", trainingDoc.getID(), Gene1, Gene2));
-
                }
                 predActualRel++;
 
@@ -56,11 +52,19 @@ class RecallScore implements  Scorer  {
     }
 
     private void DebugWriteMissingRelations(BioCCollection trainingSet, BioCCollection predictedSet) {
-        if (!theLogger.isLoggable(Level.FINEST)) return;;
+        Level loglevel = Level.FINEST;
+        if (!theLogger.isLoggable(loglevel)) return;;
 
         HashMap<String, BioCDocument> predDocIdHash = buildDocIdDocumentHash(predictedSet);
         for (BioCDocument trainDoc: trainingSet.getDocuments()) {
             BioCDocument predDoc = predDocIdHash.get(trainDoc.getID());
+            BiocGeneHelper geneHelper = new BiocGeneHelper();
+            HashSet<String> normalisedGenesInPredDoc = new HashSet<>();
+            for (BioCPassage passage: predDoc.getPassages() ) {
+                normalisedGenesInPredDoc.addAll( geneHelper.getNormliasedGenes(passage));
+
+            }
+
 
             for (BioCRelation trainRelation : trainDoc.getRelations()){
 
@@ -71,9 +75,14 @@ class RecallScore implements  Scorer  {
                 String Gene1 = trainp2pRel.getGene1();
                 String Gene2 = trainp2pRel.getGene2();
 
+                if (! normalisedGenesInPredDoc.contains(Gene1)){
+                    theLogger.log(loglevel,String.format("The document id %s does not contain the gene %s to form a relationships affecting recall", predDoc.getID(), Gene1));
 
-               if (!RelationExistsInDoc(predDoc, Gene1, Gene2)){
-                    theLogger.finest(String.format("The document id %s does not contain any relationship between %s & %s in the  set", predDoc.getID(), Gene1, Gene2));
+                }else if (! normalisedGenesInPredDoc.contains(Gene2)){
+                    theLogger.log(loglevel,String.format("The document id %s does not contain the gene %s to form a relationships affecting recall", predDoc.getID(), Gene2));
+
+                }else if (!RelationExistsInDoc(predDoc, Gene1, Gene2)){
+                    theLogger.log(loglevel,String.format("The document id %s relationship %s & %s is missing in the test set affecting recall", predDoc.getID(), Gene1, Gene2));
 
                 }
 
