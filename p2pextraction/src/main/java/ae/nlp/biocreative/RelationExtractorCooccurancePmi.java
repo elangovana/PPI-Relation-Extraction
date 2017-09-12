@@ -41,13 +41,13 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
                     int numOfSentencesWithGenePairs = entry.getValue().size();
                     boolean isSelfRelation = entry.getKey().getItems().size() == 1;
-                    if ((numOfSentencesWithGenePairs >= thresholdPairCount && !isSelfRelation)) relation = getBioCRelation(entry.getKey());
+                    if ((numOfSentencesWithGenePairs >= thresholdPairCount && ! isSelfRelation )) relation = getBioCRelation(entry.getKey());
                     //Not enough threshold.. lets try rules to see the relation can be added.
 
                     else {
                         for (Map.Entry<String, ArrayList<UnorderedPair>> sentenceGeneMapEntry : outsentenceToGeneMap.entrySet()) {
                             int numOfgenesPairsInSentence = sentenceGeneMapEntry.getValue().size();
-                            if (numOfgenesPairsInSentence > 0 && !sentenceGeneMapEntry.getValue().get(0).equals(entry.getKey())) continue;
+                            if (numOfgenesPairsInSentence == 0 || !sentenceGeneMapEntry.getValue().get(0).equals(entry.getKey())) continue;
                             //Rule 1 - Sentence  contains only one pair and contains the word interact then add it..
 
                             if (numOfgenesPairsInSentence == 1  ) {
@@ -63,10 +63,12 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
                             }
 
+                            break;
+
                         }
 
                     }
-                    if (relation != null) {
+                   if (relation != null) {
                         doc.addRelation(relation);
                     }
 
@@ -93,7 +95,7 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
             for (int i = 0; i < genesInPassage.size(); i++) {
 
 
-                for (int j = i ; j < genesInPassage.size(); j++) {
+                for (int j = i+1; j < genesInPassage.size(); j++) {
                     String gene1 = genesInPassage.get(i);
                     String gene2 = genesInPassage.get(j);
                     UnorderedPair key = new UnorderedPair(gene1, gene2);
