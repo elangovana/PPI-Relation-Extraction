@@ -15,11 +15,11 @@ public class RelationExtractorCooccurance implements RelationExtractor {
 
 
     @Override
-    public BioCCollection Extract(BioCCollectionReader biocCollectionReader) throws XMLStreamException, IOException, InterruptedException {
+    public BioCCollection Extract(BioCCollection biocCollection) throws XMLStreamException, IOException, InterruptedException {
         try{
             BioCCollection outBiocCollection = new BioCCollection();
 
-            for (Iterator<BioCDocument> doci = biocCollectionReader.readCollection().documentIterator(); doci.hasNext(); ) {
+            for (Iterator<BioCDocument> doci = biocCollection.documentIterator(); doci.hasNext(); ) {
                 BioCDocument doc = doci.next();
 
                 HashSet<String> existingGeneRelationsFromPreviousPassage = new HashSet<>();
@@ -42,7 +42,7 @@ public class RelationExtractorCooccurance implements RelationExtractor {
             return outBiocCollection;
         }
         finally {
-            if (biocCollectionReader!= null) biocCollectionReader.close();
+
         }
 
 

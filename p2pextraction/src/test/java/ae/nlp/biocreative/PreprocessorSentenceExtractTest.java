@@ -44,6 +44,7 @@ public class PreprocessorSentenceExtractTest {
 
 
         return new Object[][]{{"relationPred_relation.xml","relationPred_relationwithSentence.xml"}
+                ,{"PMtask_Relations_TrainingSet.xml","relationPred_relationwithSentence.xml"}
     };
     }
 

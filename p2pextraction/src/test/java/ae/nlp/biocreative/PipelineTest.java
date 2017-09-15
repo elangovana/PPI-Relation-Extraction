@@ -99,7 +99,7 @@ public class PipelineTest {
 
 
     @Test(dataProvider = "runRelationExtractionTestCases")
-    void runRelationExtraction(String geneAnnotatedBioCXml, String trainingDataBiocXml, String outputPath, HashMap<String, Double> expectedScores) throws SAXException, XMLStreamException, ParserConfigurationException, IOException, InterruptedException {
+    void runRelationExtraction(String geneAnnotatedBioCXml, String trainingDataBiocXml, String outputPath, HashMap<String, Double> expectedScores) throws Exception {
         //Arrange
         File geneAnnotationsPredFilePath = Paths.get(_testdatadir, geneAnnotatedBioCXml).toFile();
         File trainingDataFilePath = Paths.get(_testdatadir, trainingDataBiocXml).toFile();
@@ -128,7 +128,7 @@ public class PipelineTest {
     }
 
     @Test(dataProvider = "runRelationExtractionTestOnlyTestCases")
-    void runRelationExtractionTestOnly(String geneAnnotatedBioCXml) throws SAXException, XMLStreamException, ParserConfigurationException, IOException, InterruptedException {
+    void runRelationExtractionTestOnly(String geneAnnotatedBioCXml) throws Exception {
         //Arrange
         String tmpOutPath = Files.createTempDirectory("pipelineOut").toString();
 

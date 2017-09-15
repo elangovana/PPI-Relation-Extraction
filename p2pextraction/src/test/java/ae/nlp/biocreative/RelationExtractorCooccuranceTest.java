@@ -33,7 +33,7 @@ public class RelationExtractorCooccuranceTest {
         File sampletraindatafile = Paths.get(testdatadir, iGeneAnnoatedBiocXml).toAbsolutePath().toFile();
 
         //Act
-        BioCCollection actual= sut.Extract(new Parser().getBioCCollection(sampletraindatafile));
+        BioCCollection actual= sut.Extract(new Parser().getBioCCollection(sampletraindatafile).readCollection());
 
         //Smoke check
         Assert.assertEquals( actual.getDocmentCount(),new Parser().getBioCCollection(sampletraindatafile).readCollection().getDocmentCount());

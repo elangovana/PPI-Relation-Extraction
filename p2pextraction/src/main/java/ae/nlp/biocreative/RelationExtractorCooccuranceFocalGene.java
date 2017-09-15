@@ -8,18 +8,18 @@ import java.io.IOException;
 import java.util.*;
 
 
-public class RelationExtractorCooccurancePmi implements RelationExtractor {
+public class RelationExtractorCooccuranceFocalGene implements RelationExtractor {
     private List<Preprocessor> preProcessors;
-    public Integer thresholdPairCount = 3;
+    private Integer thresholdPairCount = 2;
 
     @Override
-    public BioCCollection Extract(BioCCollection ibioCCollection) throws XMLStreamException, IOException, InterruptedException {
+    public BioCCollection Extract(BioCCollection biocCollectionI) throws XMLStreamException, IOException, InterruptedException {
 
 
         try {
             BioCCollection outBiocCollection = new BioCCollection();
             //Preprocess
-            BioCCollection biocCollection = Preprocess(ibioCCollection);
+            BioCCollection biocCollection = Preprocess(biocCollectionI);
 
             for (Iterator<BioCDocument> doci = biocCollection.documentIterator(); doci.hasNext(); ) {
                 BioCDocument doc = doci.next();
@@ -28,11 +28,6 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
                 PopulateGenePairSentences(doc, outgenePairSentences, outsentenceToGeneMap);
 
-//                if (outgenePairSentences.size() == 1){
-//                    BioCRelation relation = getBioCRelation(outgenePairSentences.get(outgenePairSentences).);
-//                    doc.addRelation(relation);
-//                    continue;;
-//                }
 
                 for (Map.Entry<UnorderedPair, ArrayList<String>> entry : outgenePairSentences.entrySet()) {
 
@@ -44,30 +39,30 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
                     if ((numOfSentencesWithGenePairs >= thresholdPairCount && ! isSelfRelation )) relation = getBioCRelation(entry.getKey());
                     //Not enough threshold.. lets try rules to see the relation can be added.
 
-                    else {
-                        for (Map.Entry<String, ArrayList<UnorderedPair>> sentenceGeneMapEntry : outsentenceToGeneMap.entrySet()) {
-                            int numOfgenesPairsInSentence = sentenceGeneMapEntry.getValue().size();
-                            if (numOfgenesPairsInSentence == 0 || !sentenceGeneMapEntry.getValue().get(0).equals(entry.getKey())) continue;
-                            //Rule 1 - Sentence  contains only one pair and contains the word interact then add it..
-
-                            if (numOfgenesPairsInSentence == 1  ) {
-                                String sentence = sentenceGeneMapEntry.getKey();
-                                if  (!isSelfRelation && sentence.contains("interact")){
-                                    relation = getBioCRelation(entry.getKey());
-
-                                }
-
-//                                if (isSelfRelation && sentence.contains("muta")) {
-//                                    //relation = getBioCRelation(entry.getKey());
+//                    else {
+//                        for (Map.Entry<String, ArrayList<UnorderedPair>> sentenceGeneMapEntry : outsentenceToGeneMap.entrySet()) {
+//                            int numOfgenesPairsInSentence = sentenceGeneMapEntry.getValue().size();
+//                            if (numOfgenesPairsInSentence == 0 || !sentenceGeneMapEntry.getValue().get(0).equals(entry.getKey())) continue;
+//                            //Rule 1 - Sentence  contains only one pair and contains the word interact then add it..
+//
+//                            if (numOfgenesPairsInSentence == 1  ) {
+//                                String sentence = sentenceGeneMapEntry.getKey();
+//                                if  (!isSelfRelation && sentence.contains("interact")){
+//                                    relation = getBioCRelation(entry.getKey());
+//
 //                                }
-
-                            }
-
-                            break;
-
-                        }
-
-                    }
+//
+////                                if (isSelfRelation && sentence.contains("muta")) {
+////                                    //relation = getBioCRelation(entry.getKey());
+////                                }
+//
+//                            }
+//
+//                            break;
+//
+//                        }
+//
+//                    }
                    if (relation != null) {
                         doc.addRelation(relation);
                     }
@@ -92,14 +87,13 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
             //   if (passage.getInfon("type").get().equals("title")) continue;
             List<String> genesInPassage = geneHelper.getNormliasedGenes(passage);
 
-            for (int i = 0; i < genesInPassage.size(); i++) {
-
-
-                for (int j = i+1; j < genesInPassage.size(); j++) {
-                    String gene1 = genesInPassage.get(i);
+            List<String> topMentionedGenes = getTopMentionedGenes(passage, genesInPassage);
+            for (String topMentionedGene: topMentionedGenes ) {
+                for (int j = 0; j < genesInPassage.size(); j++) {
+                    String gene1 = topMentionedGene;
                     String gene2 = genesInPassage.get(j);
                     UnorderedPair key = new UnorderedPair(gene1, gene2);
-
+                    if (gene1.equals(gene2)) continue;;
                     outGenePairSentences.putIfAbsent(key, new ArrayList<>());
 
                     //For each sentence check if contains gene pairs
@@ -117,12 +111,55 @@ public class RelationExtractorCooccurancePmi implements RelationExtractor {
 
                     }
                 }
-
-
             }
 
 
+
+
+
         }
+    }
+
+    private List<String> getTopMentionedGenes(BioCPassage passage, List<String> genesInPassage) {
+        HashMap<String, Integer> geneMentions = new HashMap<>();
+        for (int i = 0; i < genesInPassage.size(); i++) {
+
+
+                String gene1 = genesInPassage.get(i);
+
+
+                //For each sentence check if contains gene pairs
+                for (BioCSentence biocSentence : passage.getSentences()) {
+                    String senence = biocSentence.getText().get();
+                    geneMentions.putIfAbsent(gene1, 0);
+                    if (senence.contains(gene1) ) {
+
+                        geneMentions.put(gene1, geneMentions.get(gene1)+1);
+                    }
+                    ;
+
+                }
+        }
+
+        int topGeneMentioendCount =0;
+        Set<String> TopGeneNames = new HashSet<>();
+        //Get Top count.. TODO clean up
+        for (Map.Entry<String, Integer> geneMentionEntry: geneMentions.entrySet()  ) {
+            if (geneMentionEntry.getValue() > topGeneMentioendCount) {
+
+                topGeneMentioendCount=geneMentionEntry.getValue();
+            }
+
+        }
+
+        for (Map.Entry<String, Integer> geneMentionEntry: geneMentions.entrySet()  ) {
+            if (geneMentionEntry.getValue() == topGeneMentioendCount) {
+
+                TopGeneNames.add(geneMentionEntry.getKey());
+            }
+
+        }
+        return new ArrayList<>(TopGeneNames);
     }
 
     private BioCRelation getBioCRelation(UnorderedPair entry) {

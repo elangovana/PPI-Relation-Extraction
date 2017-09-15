@@ -33,7 +33,7 @@ public class Pipeline {
             Logger.getLogger(Pipeline.class.getName());
 
 
-    public HashMap<String, Double> runRelationExtraction(String biocFileXmlWithGeneAnnotationsPath, String biocFileXmlTrainingDataPath, String outputPath  ) throws SAXException, XMLStreamException, ParserConfigurationException, IOException, InterruptedException {
+    public HashMap<String, Double> runRelationExtraction(String biocFileXmlWithGeneAnnotationsPath, String biocFileXmlTrainingDataPath, String outputPath  ) throws Exception {
 
         File biocFileXmlWithGeneAnnotations = Paths.get(biocFileXmlWithGeneAnnotationsPath).toAbsolutePath().toFile();
 
@@ -44,14 +44,20 @@ public class Pipeline {
 
         for (RelationExtractor relationextractor: getRelationExtractors()  ) {
             BioCCollectionReader biocCollGeneAnnotations = new Parser().getBioCCollection(biocFileXmlWithGeneAnnotations);
-            BioCCollection pred= relationextractor.Extract(biocCollGeneAnnotations);
+            BioCCollection pred= relationextractor.Extract(biocCollGeneAnnotations.readCollection());
 
              if (biocFileXmlTrainingDataPath != null){
                 File  biocFileXmlTrainingDatafile = Paths.get(biocFileXmlTrainingDataPath).toAbsolutePath().toFile();
                 BioCCollection trainBioCCollection = new Parser().getBioCCollection(biocFileXmlTrainingDatafile).readCollection();
                 for (Scorer scorer: getScorers()) {
 
-                    result.put(relationextractor.getClass().getName()+ "#" + scorer.GetScoringMethodName(), scorer.CalculateScore(trainBioCCollection, pred));
+
+                    String keyMethod = relationextractor.getClass().getName() + "#" + scorer.GetScoringMethodName();
+                    double score = scorer.CalculateScore(trainBioCCollection, pred);
+                    result.put(keyMethod, score);
+                    theLogger.info(String.format("The score for method %s is %2$.5f", keyMethod,score));
+
+
                 }
 
             }
@@ -81,6 +87,8 @@ public class Pipeline {
             relationExtractors = new ArrayList<>();
             relationExtractors.add(new RelationExtractorCooccurance());
             relationExtractors.add(new RelationExtractorCooccurancePmi());
+            relationExtractors.add(new RelationExtractorCooccuranceFocalGene());
+            relationExtractors.add(new RelationExtractorCooccuranceFocalWithPmiGene());
         }
 
         return relationExtractors;
