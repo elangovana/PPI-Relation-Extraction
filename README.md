@@ -1,4 +1,4 @@
-# Relation extraction - Extract protein interactions affected by mutation Biocreative VI , Track 4 task
+# Biocreative VI Track 4 task - Extract protein interactions affected by mutation 
 ## Introduction
 We used a co-occurrence based approach to extract protein interactions affected by mutation (PPIm) .  We applied a heuristic that if a gene pair gets mentioned in more than two sentences within an abstract then the pair is likely to be in a PPIm relationship. This heuristic was based on the fact that all the documents in the training set are relevant for PPIm, as they were all marked as relevant in the document triage task training set.  
 
