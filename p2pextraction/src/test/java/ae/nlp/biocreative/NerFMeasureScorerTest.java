@@ -40,9 +40,10 @@ public class NerFMeasureScorerTest {
     @DataProvider(name = "calculateScoreTestCases")
     public static Object[][] calculateScoreTestCases() {
 
-        return new Object[][]{{"PMtask_Relations_TrainingSet_noannotation_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml", .663}
-    ,{"PMtask_Relations_TrainingSet.xml", "PMtask_Relations_TrainingSet.xml", 1.0}
-    };
+        return new Object[][]{
+                {"PMtask_Relations_TrainingSet_noannotation_Gnormplus_out.xml", "PMtask_Relations_TrainingSet.xml", .663}
+                , {"PMtask_Relations_TrainingSet.xml", "PMtask_Relations_TrainingSet.xml", 1.0}
+        };
     }
 
     @Test(dataProvider = "calculateScoreTestCases")
@@ -52,13 +53,13 @@ public class NerFMeasureScorerTest {
         File samplePreddatafile = Paths.get(testdatadir, iPredictedRelBiocXML).toFile();
         BioCCollection predSet = new Parser().getBioCCollection(samplePreddatafile).readCollection();
         BioCCollection trainingSet = new Parser().getBioCCollection(sampletraindatafile).readCollection();
-    
+
         //Act
         double actual = _sut.Score(trainingSet, predSet);
 
         //Assert
         DecimalFormat numFormat = new DecimalFormat("0.000");
-        Assert.assertEquals(numFormat.format(actual),numFormat.format(expectedScore));
+        Assert.assertEquals(numFormat.format(actual), numFormat.format(expectedScore));
     }
 
 }

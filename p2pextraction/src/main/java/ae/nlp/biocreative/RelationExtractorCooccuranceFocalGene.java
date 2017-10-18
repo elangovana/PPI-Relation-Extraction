@@ -10,7 +10,7 @@ import java.util.*;
 
 public class RelationExtractorCooccuranceFocalGene implements RelationExtractor {
     private List<Preprocessor> preProcessors;
-    private Integer thresholdPairCount = 2;
+    private Integer thresholdPairCount = 1;
 
     @Override
     public BioCCollection Extract(BioCCollection biocCollectionI) throws XMLStreamException, IOException, InterruptedException {

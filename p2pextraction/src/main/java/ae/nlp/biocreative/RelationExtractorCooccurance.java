@@ -87,11 +87,9 @@ public class RelationExtractorCooccurance implements RelationExtractor {
     }
 
 
-    /**
-     * @param passage Biocpassage
-     * @return Returns the list of genes from the annotations
-     */
 
-
+    public String toString() {
+        return String.format("Co-Occurance");
+    }
 }
 
