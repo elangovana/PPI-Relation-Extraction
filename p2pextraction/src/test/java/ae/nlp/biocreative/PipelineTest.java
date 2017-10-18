@@ -40,10 +40,6 @@ public class PipelineTest {
     @DataProvider(name = "runRelationExtractionTestCases")
     public static Object[][] runRelationExtractionTestCases() throws IOException {
         String tmpOutPath = Files.createTempDirectory("pipelineOut").toString();
-        final String COOCCRecall = "ae.nlp.biocreative.RelationExtractorCooccurance#ae.nlp.biocreative.RecallScore";
-        final String COOCCPrec = "ae.nlp.biocreative.RelationExtractorCooccurance#ae.nlp.biocreative.PrecisionScore";
-        final String COOCCPMIPrec = "ae.nlp.biocreative.RelationExtractorCooccurancePmi#ae.nlp.biocreative.PrecisionScore";
-        final String COOCCPMIRecall = "ae.nlp.biocreative.RelationExtractorCooccurancePmi#ae.nlp.biocreative.RecallScore";
 
         RelationExtractor relExtractorCoOccPmi2 = new RelationExtractorCooccurancePmi(2);
         RelationExtractor relExtractorCoOcc = new RelationExtractorCooccurance();
