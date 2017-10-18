@@ -33,6 +33,13 @@ public class Pipeline {
             Logger.getLogger(Pipeline.class.getName());
 
 
+    /**
+     * @param biocFileXmlWithGeneAnnotationsPath is a input bioc xml file annotated with gene names
+     * @param biocFileXmlTrainingDataPath is the training set with relations and is optional.
+     * @param outputPath is the output directory
+     * @return Returns a hashMap of the scoring method and the corresponding score.
+     * @throws Exception
+     */
     public HashMap<String, Double> runRelationExtraction(String biocFileXmlWithGeneAnnotationsPath, String biocFileXmlTrainingDataPath, String outputPath  ) throws Exception {
 
         File biocFileXmlWithGeneAnnotations = Paths.get(biocFileXmlWithGeneAnnotationsPath).toAbsolutePath().toFile();
