@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 
 
 /**
- * Hello world!
+ * Aws handler that s3 object events to kickoff the relation extraction pipeline
  *
  */
 public class S3EventHandler implements RequestHandler<S3Event, String>
@@ -39,9 +39,10 @@ public class S3EventHandler implements RequestHandler<S3Event, String>
             // Get Event Record
             S3EventNotificationRecord record = input.getRecords().get(0);
 
-            // Source File Name
+            // Source File Name & bucket
             String objectKey = record.getS3().getObject().getKey();
             String bucketName = record.getS3().getBucket().getName();
+            logger.log(String.format("Obtaining input object %s from bucket %s",  objectKey, bucketName) );
 
             // Temp local copy of s3 Object
             String tmpInFileName = File.createTempFile("s3Input", ".xml").getAbsolutePath();
@@ -62,11 +63,15 @@ public class S3EventHandler implements RequestHandler<S3Event, String>
             }
 
             //Invoke Relation Extraction
+            logger.log(String.format("Running the relation extraction pipeline..") );
             Pipeline pipeline = new Pipeline();
             pipeline.runRelationExtraction(tmpInFileName,null, tmpOutFileName);
+            logger.log(String.format("Relation extraction pipeline completed") );
 
             //write output to s3 object
-            s3.putObject(bucketName, Paths.get(objectKey, (new File(tmpOutFileName)).getName() ).toString(), tmpOutFileName);
+            String outputs3ObjectKey = Paths.get(objectKey, (new File(tmpOutFileName)).getName()).toString();
+            logger.log(String.format("Writing the output %s to s3") );
+            s3.putObject(bucketName, outputs3ObjectKey, tmpOutFileName);
 
             //LOG
             logger.log("Run completed " );
