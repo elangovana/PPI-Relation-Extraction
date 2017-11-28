@@ -79,7 +79,7 @@ public class S3EventHandler implements RequestHandler<S3Event, String>
             //write output to s3 object
             String outputs3ObjectKey = Paths.get(objectKey, (new File(tmpOutFileName)).getName()).toString();
             logger.log(String.format("Writing the output %s to s3 into bucket %s", outputs3ObjectKey, bucketName) );
-            s3.putObject(bucketName, outputs3ObjectKey, tmpOutFileName);
+            s3.putObject(bucketName, outputs3ObjectKey, new File(tmpOutFileName));
 
             //LOG
             logger.log("Run completed " );
