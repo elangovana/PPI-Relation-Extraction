@@ -27,6 +27,10 @@ public class S3EventHandler implements RequestHandler<S3Event, String>
 {
 
 
+    private LambdaLogger logger;
+
+
+
     /**
      * Handles the s3 event. Triggers the relation extraction task when a s3 object xml file is created in s3.
      * @param input
@@ -38,7 +42,7 @@ public class S3EventHandler implements RequestHandler<S3Event, String>
         try
         {
             // Logger
-            LambdaLogger logger = context.getLogger();
+            logger = context.getLogger();
 
             // Get Event Record
             S3EventNotificationRecord record = input.getRecords().get(0);
@@ -46,7 +50,7 @@ public class S3EventHandler implements RequestHandler<S3Event, String>
             // Source File Name & bucket
             String objectKey = record.getS3().getObject().getKey();
             String bucketName = record.getS3().getBucket().getName();
-            logger.log(String.format("Obtaining input object %s from bucket %s",  objectKey, bucketName) );
+            logger.log(String.format("Starting trigger for input object %s from bucket %s",  objectKey, bucketName) );
 
             // Temp local copy of s3 Object
             String tmpInFileName = File.createTempFile("s3Input", ".xml").getAbsolutePath();
@@ -74,7 +78,7 @@ public class S3EventHandler implements RequestHandler<S3Event, String>
 
             //write output to s3 object
             String outputs3ObjectKey = Paths.get(objectKey, (new File(tmpOutFileName)).getName()).toString();
-            logger.log(String.format("Writing the output %s to s3") );
+            logger.log(String.format("Writing the output %s to s3 into bucket %s", outputs3ObjectKey, bucketName) );
             s3.putObject(bucketName, outputs3ObjectKey, tmpOutFileName);
 
             //LOG
@@ -101,6 +105,7 @@ public class S3EventHandler implements RequestHandler<S3Event, String>
         //Get s3 Object
         S3ObjectInputStream s3InStream = null;
         try{
+            logger.log(String.format("Retrieving s3 Object %s from bucket %s",objectKey, bucketName));
             S3Object s3Object = s3.getObject(bucketName, objectKey);
             s3InStream = s3Object.getObjectContent();
 
