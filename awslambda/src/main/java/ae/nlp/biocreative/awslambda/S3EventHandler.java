@@ -27,8 +27,12 @@ public class S3EventHandler implements RequestHandler<S3Event, String>
 {
 
 
-
-
+    /**
+     * Handles the s3 event. Triggers the relation extraction task when a s3 object xml file is created in s3.
+     * @param input
+     * @param context
+     * @return
+     */
     public String handleRequest(S3Event input, Context context)
     {
         try
