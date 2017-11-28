@@ -34,13 +34,14 @@ public class Pipeline {
 
 
     /**
+     * ΩΩ
      * @param biocFileXmlWithGeneAnnotationsPath is a input bioc xml file annotated with gene names
      * @param biocFileXmlTrainingDataPath        is the training set with relations and is optional.
-     * @param outputPath                         is the output directory
+     * @param outputFile                         is the output filename
      * @return Returns a score
      * @throws Exception
      */
-    public Double runRelationExtraction(String biocFileXmlWithGeneAnnotationsPath, String biocFileXmlTrainingDataPath, String outputPath) throws Exception {
+    public Double runRelationExtraction(String biocFileXmlWithGeneAnnotationsPath, String biocFileXmlTrainingDataPath, String outputFile) throws Exception {
 
         File biocFileXmlWithGeneAnnotations = Paths.get(biocFileXmlWithGeneAnnotationsPath).toAbsolutePath().toFile();
         BioCCollectionReader biocCollGeneAnnotations = new Parser().getBioCCollection(biocFileXmlWithGeneAnnotations);
@@ -53,7 +54,7 @@ public class Pipeline {
         }
         //Write predictions
         theLogger.info(String.format("Writing predictions for method %s", getRelationExtractor().getClass().getName()));
-        writePredictions(pred, outputPath);
+        writePredictions(pred, outputFile);
 
 
         return result;
@@ -70,10 +71,9 @@ public class Pipeline {
         return result;
     }
 
-    private void writePredictions(BioCCollection pred, String outputPath) throws IOException, XMLStreamException {
+    private void writePredictions(BioCCollection pred, String outputFile) throws IOException, XMLStreamException {
 
-        String formmatedDate = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
-        Path outputFile = Paths.get(outputPath, String.format("%s_%s.xml", "predictedRelations", formmatedDate));
+
         theLogger.info(String.format("Writing predictions to %s", outputFile));
 
         BioCCollectionWriter writer = new BioCCollectionWriter(outputFile);

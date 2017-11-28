@@ -7,12 +7,11 @@ import org.testng.annotations.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.logging.Logger;
 
 
@@ -65,14 +64,16 @@ public class PipelineTest {
         File geneAnnotationsPredFilePath = Paths.get(_testdatadir, geneAnnotatedBioCXml).toFile();
         File trainingDataFilePath = Paths.get(_testdatadir, trainingDataBiocXml).toFile();
         _sut.setRelationExtractor(relationExtractors);
+        //Create tmp outputfile
+        String formmatedDate = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
+        String outputFile = Paths.get(outputPath, String.format("%s_%s.xml", "predictedRelations", formmatedDate)).toAbsolutePath().toString();
 
         //Act
-        double actual = _sut.runRelationExtraction(geneAnnotationsPredFilePath.getAbsolutePath(), trainingDataFilePath.getAbsolutePath(), outputPath);
+        double actual = _sut.runRelationExtraction(geneAnnotationsPredFilePath.getAbsolutePath(), trainingDataFilePath.getAbsolutePath(), outputFile);
 
 
         //Assert
         DecimalFormat numFormat = new DecimalFormat("0.000");
-
         Assert.assertEquals(numFormat.format(actual), numFormat.format(expectedScores));
 
     }
@@ -87,7 +88,7 @@ public class PipelineTest {
     @Test(dataProvider = "runRelationExtractionTestOnlyTestCases")
     void runRelationExtractionTestOnly(String geneAnnotatedBioCXml) throws Exception {
         //Arrange
-        String tmpOutPath = Files.createTempDirectory("pipelineOut").toString();
+        String tmpOutPath = Files.createTempFile("test_runRelationExtractionTestOnly", ".xml").toString();
 
         File geneAnnotationsPredFilePath = Paths.get(_testdatadir, geneAnnotatedBioCXml).toFile();
 
